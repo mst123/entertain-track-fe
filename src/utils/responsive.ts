@@ -1,5 +1,6 @@
 // 响应式storage
 import type { App } from "vue";
+// 响应式本地存储
 import Storage from "responsive-storage";
 import { routerArrays } from "@/layout/types";
 import { responsiveStorageNameSpace } from "@/config";

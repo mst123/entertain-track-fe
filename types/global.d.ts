@@ -61,6 +61,8 @@ declare global {
     VITE_CDN: boolean;
     VITE_HIDE_HOME: string;
     VITE_COMPRESSION: ViteCompression;
+    VIET_HEADER_PARAMETER_NAME: string;
+    VIET_CLIENT_ID: string;
   }
 
   /**

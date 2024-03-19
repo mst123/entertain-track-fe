@@ -4,8 +4,8 @@ import type { userType } from "./types";
 import { routerArrays } from "@/layout/types";
 import { router, resetRouter } from "@/router";
 import { storageLocal } from "@pureadmin/utils";
-import { getLogin, refreshTokenApi } from "@/api/user";
-import type { UserResult, RefreshTokenResult } from "@/api/user";
+import { getLogin, refreshTokenApi, getLogout } from "@/api/user";
+import type { UserResult } from "@/api/user";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
 
@@ -16,10 +16,9 @@ export const useUserStore = defineStore({
     username: storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "",
     // 页面级别权限
     roles: storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [],
-    // 是否勾选了登录页的免登录
-    isRemembered: false,
-    // 登录页的免登录存储几天，默认7天
-    loginDay: 7
+    // 刷新用的token
+    refreshToken:
+      storageLocal().getItem<DataInfo<number>>(userKey)?.refreshToken ?? ""
   }),
   actions: {
     /** 存储用户名 */
@@ -30,22 +29,19 @@ export const useUserStore = defineStore({
     SET_ROLES(roles: Array<string>) {
       this.roles = roles;
     },
-    /** 存储是否勾选了登录页的免登录 */
-    SET_ISREMEMBERED(bool: boolean) {
-      this.isRemembered = bool;
-    },
-    /** 设置登录页的免登录存储几天 */
-    SET_LOGINDAY(value: number) {
-      this.loginDay = Number(value);
-    },
     /** 登入 */
-    async loginByUsername(data) {
+    async loginByEmail(data) {
       return new Promise<UserResult>((resolve, reject) => {
         getLogin(data)
-          .then(data => {
-            if (data) {
-              setToken(data.data);
-              resolve(data);
+          .then(res => {
+            if (res.status === "success") {
+              const data = res.data;
+              setToken({
+                ...data.refresh,
+                username: data.user.username,
+                roles: [data.user.userPermission]
+              });
+              resolve(res);
             }
           })
           .catch(error => {
@@ -54,22 +50,34 @@ export const useUserStore = defineStore({
       });
     },
     /** 前端登出（不调用接口） */
-    logOut() {
-      this.username = "";
-      this.roles = [];
-      removeToken();
-      useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
-      resetRouter();
-      router.push("/login");
+    async logOut() {
+      return new Promise<void>((resolve, reject) => {
+        getLogout()
+          .then(res => {
+            if (res.status === "success") {
+              this.username = "";
+              this.roles = [];
+              removeToken();
+              useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
+              resetRouter();
+              router.push("/login");
+              resolve();
+            } else {
+              reject(res.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
     },
     /** 刷新`token` */
     async handRefreshToken(data) {
-      return new Promise<RefreshTokenResult>((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         refreshTokenApi(data)
-          .then(data => {
-            if (data) {
-              setToken(data.data);
-              resolve(data);
+          .then(res => {
+            if (res) {
+              resolve();
             }
           })
           .catch(error => {

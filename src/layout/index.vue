@@ -1,3 +1,47 @@
+<template>
+  <div ref="appWrapperRef" :class="['app-wrapper', set.classes]">
+    <div
+      v-show="
+        set.device === 'mobile' &&
+        set.sidebar.opened &&
+        layout.includes('vertical')
+      "
+      class="app-mask"
+      @click="useAppStoreHook().toggleSideBar()"
+    />
+    <Vertical
+      v-show="
+        !pureSetting.hiddenSideBar &&
+        (layout.includes('vertical') || layout.includes('mix'))
+      "
+    />
+    <div
+      :class="[
+        'main-container',
+        pureSetting.hiddenSideBar ? 'main-hidden' : ''
+      ]"
+    >
+      <div v-if="set.fixedHeader">
+        <layout-header />
+        <!-- 主体内容 -->
+        <app-main :fixed-header="set.fixedHeader" />
+      </div>
+      <el-scrollbar v-else>
+        <el-backtop
+          title="回到顶部"
+          target=".main-container .el-scrollbar__wrap"
+        >
+          <backTop />
+        </el-backtop>
+        <layout-header />
+        <!-- 主体内容 -->
+        <app-main :fixed-header="set.fixedHeader" />
+      </el-scrollbar>
+    </div>
+    <!-- 系统设置 -->
+    <setting />
+  </div>
+</template>
 <script setup lang="ts">
 import "animate.css";
 // 引入 src/components/ReIcon/src/offlineIcon.ts 文件中所有使用addIcon添加过的本地图标
@@ -153,51 +197,6 @@ const layoutHeader = defineComponent({
   }
 });
 </script>
-
-<template>
-  <div ref="appWrapperRef" :class="['app-wrapper', set.classes]">
-    <div
-      v-show="
-        set.device === 'mobile' &&
-        set.sidebar.opened &&
-        layout.includes('vertical')
-      "
-      class="app-mask"
-      @click="useAppStoreHook().toggleSideBar()"
-    />
-    <Vertical
-      v-show="
-        !pureSetting.hiddenSideBar &&
-        (layout.includes('vertical') || layout.includes('mix'))
-      "
-    />
-    <div
-      :class="[
-        'main-container',
-        pureSetting.hiddenSideBar ? 'main-hidden' : ''
-      ]"
-    >
-      <div v-if="set.fixedHeader">
-        <layout-header />
-        <!-- 主体内容 -->
-        <app-main :fixed-header="set.fixedHeader" />
-      </div>
-      <el-scrollbar v-else>
-        <el-backtop
-          title="回到顶部"
-          target=".main-container .el-scrollbar__wrap"
-        >
-          <backTop />
-        </el-backtop>
-        <layout-header />
-        <!-- 主体内容 -->
-        <app-main :fixed-header="set.fixedHeader" />
-      </el-scrollbar>
-    </div>
-    <!-- 系统设置 -->
-    <setting />
-  </div>
-</template>
 
 <style lang="scss" scoped>
 .app-wrapper {
