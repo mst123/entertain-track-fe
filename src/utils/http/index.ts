@@ -160,6 +160,7 @@ class PureHttp {
     method: RequestMethods,
     url: string,
     param?: AxiosRequestConfig,
+    // 自定义的config 覆盖
     axiosConfig?: PureHttpRequestConfig
   ): Promise<T> {
     // DOUBT 看不懂这个as
@@ -184,21 +185,17 @@ class PureHttp {
   }
 
   /** 单独抽离的post工具函数 */
-  public post<T, P>(
-    url: string,
-    params?: AxiosRequestConfig<T>,
-    config?: PureHttpRequestConfig
-  ): Promise<P> {
-    return this.request<P>("post", url, params, config);
+  public post<T, P>(url: string, config?: AxiosRequestConfig<T>): Promise<P> {
+    return this.request<P>("post", url, config);
   }
 
   /** 单独抽离的get工具函数 */
   public get<T, P>(
     url: string,
-    params?: AxiosRequestConfig<T>,
-    config?: PureHttpRequestConfig
+    params: T,
+    config?: AxiosRequestConfig
   ): Promise<P> {
-    return this.request<P>("get", url, params, config);
+    return this.request<P>("get", url, { params, ...config });
   }
 }
 

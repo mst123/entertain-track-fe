@@ -18,6 +18,7 @@ export interface PureHttpError extends AxiosError {
   isCancelRequest?: boolean;
 }
 
+// TODO PureHttpRequestConfig 废弃
 export interface PureHttpResponse extends AxiosResponse {
   config: PureHttpRequestConfig;
 }
@@ -31,17 +32,8 @@ export default class PureHttp {
   request<T>(
     method: RequestMethods,
     url: string,
-    param?: AxiosRequestConfig,
-    axiosConfig?: PureHttpRequestConfig
+    param?: AxiosRequestConfig
   ): Promise<T>;
-  post<T, P>(
-    url: string,
-    params?: T,
-    config?: PureHttpRequestConfig
-  ): Promise<P>;
-  get<T, P>(
-    url: string,
-    params?: T,
-    config?: PureHttpRequestConfig
-  ): Promise<P>;
+  post<T, P>(url: string, params?: T): Promise<P>;
+  get<T, P>(url: string, params?: T): Promise<P>;
 }
