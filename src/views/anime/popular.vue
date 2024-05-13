@@ -19,6 +19,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 import { getAnimeRankingListByType } from "@/api/anime/index";
+import { type AnimeNode } from "@/api/anime/types/anime-detail";
 
 const scrollRef = ref<HTMLElement>(null);
 const realHeight = ref<number>(null);
@@ -26,7 +27,7 @@ defineOptions({
   name: "AnimalPopular"
 });
 
-const animeList = ref<Array<Ainime.AnimeNode>>([]);
+const animeList = ref<Array<AnimeNode>>([]);
 const pageSize = ref(30);
 const offset = ref(0);
 const loading = ref<Boolean>(false);
