@@ -13,6 +13,14 @@ export default {
       }
     },
     {
+      path: "/anime/ranking",
+      name: "anime-ranking",
+      component: () => import("@/views/anime/ranking.vue"),
+      meta: {
+        title: "动漫排名"
+      }
+    },
+    {
       path: "/anime/season",
       name: "anime-season",
       component: () => import("@/views/anime/season.vue"),
@@ -21,11 +29,12 @@ export default {
       }
     },
     {
-      path: "/anime/ranking",
-      name: "anime-ranking",
-      component: () => import("@/views/anime/ranking.vue"),
+      path: "/anime/detail/:animeID",
+      name: "anime-detail",
+      component: () => import("@/views/anime/detail.vue"),
       meta: {
-        title: "番季动漫"
+        title: "动漫详情",
+        showLink: false
       }
     }
   ]

@@ -21,7 +21,7 @@ type MediaType =
 // FinishedAiring = 'finished_airing', // 已完结
 // CurrentlyAiring = 'currently_airing', // 当前正在播放
 // NotYetAired = 'not_yet_aired', // 尚未播出
-type Status = "finished_airing" | "currently_airing" | "not_yet_aired";
+export type Status = "finished_airing" | "currently_airing" | "not_yet_aired";
 
 // G = 'g', // G - 适合所有年龄
 // PG = 'pg', // PG - 儿童
@@ -87,7 +87,7 @@ type Source =
 //   | "statistics";
 
 // 定义子文档 Schema
-interface MainPicture {
+export interface Picture {
   medium: string; // 缩略图链接
   large: string; // 大图链接
 }
@@ -95,7 +95,7 @@ interface MainPicture {
 interface BaseNode {
   id: number; // 关联动画 ID
   title: string; // 关联动画 /漫画标题
-  main_picture: MainPicture; // 关联动画 /漫画的主图
+  main_picture: Picture; // 关联动画 /漫画的主图
 }
 // 定义子文档 Schema
 interface AlternativeTitles {
@@ -104,8 +104,8 @@ interface AlternativeTitles {
   ja: string; // 日文标题
 }
 
-// 定义子文档 Schema
-interface Genre {
+// 定义子文档 标签
+export interface Genre {
   id: number; // 类型 ID
   name: string; // 类型名称
 }
@@ -122,21 +122,15 @@ interface Studio {
   name: string; // 工作室名称
 }
 
-// 定义子文档 Schema
-interface Picture {
-  medium: string; // 缩略图链接
-  large: string; // 大图链接
-}
-
-// 定义子文档 Schema
-interface RelatedAnime {
+// 关联动漫
+export interface RelatedAnime {
   AnimeNode: BaseNode;
   relation_type: string; // 关联类型
   relation_type_formatted: string; // 格式化的关联类型
 }
 
 // TODO 暂无关联漫画
-interface RelatedManga {
+export interface RelatedManga {
   AnimeNode: BaseNode;
   relation_type: string; // 关联类型
   relation_type_formatted: string; // 格式化的关联类型
@@ -187,7 +181,7 @@ interface CommonPaging {
 export interface AnimeBase {
   id: number;
   title: string; // 标题
-  main_picture: MainPicture; // 主图片
+  main_picture: Picture; // 主图片
   alternative_titles: AlternativeTitles; // 别名
   start_date: string; // 开始日期
   end_date: string; // 结束日期
@@ -232,16 +226,16 @@ export interface GET_ANIME_LIST_SEARCH_RES extends CommonPaging {
   data: Array<AnimeNode>;
 }
 // 动漫排名
-type RankingType =
-  | "all"
-  | "airing"
-  | "upcoming"
-  | "tv"
-  | "ova"
-  | "movie"
-  | "special"
-  | "bypopularity"
-  | "favorite";
+export type RankingType =
+  | "all" // 所有热门动漫系列
+  | "airing" // 热门更新中动漫
+  | "upcoming" // 热门即将播出动漫
+  | "tv" // 热门动画电视系列
+  | "ova" // 热门动画OVA系列
+  | "movie" // 热门动画电影
+  | "special" // 热门动画特别篇
+  | "bypopularity" // 按受欢迎程度排名的热门动漫
+  | "favorite"; // 受欢迎程度最高的热门动漫
 
 export interface GET_ANIME_LIST_RANKING_QUERY extends AnimeCommonRequestParams {
   ranking_type: RankingType;
@@ -250,7 +244,7 @@ export interface GET_ANIME_LIST_RANKING_RES extends CommonPaging {
   data: Array<AnimeNode>;
 }
 // 根据年份和季度查询动漫
-type SeasonType = "winter" | "spring" | "summer" | "fall"; // 季度
+export type SeasonType = "winter" | "spring" | "summer" | "fall"; // 季度
 export interface GET_ANIME_LIST_SEASON_QUERY extends AnimeCommonRequestParams {
   year: string;
   season: SeasonType;
@@ -260,8 +254,8 @@ export interface GET_ANIME_LIST_SEASON_RES extends CommonPaging {
   data: Array<AnimeNode>;
 }
 // 查询动漫详情
-export interface GET_ANIME_DETAIL_QUERY extends AnimeCommonRequestParams {
+export interface GET_ANIME_DETAIL_QUERY {
   anime_id: string;
-  fields: SeasonType;
+  fields: string;
 }
 export interface GET_ANIME_DETAIL_RES extends AnimeBase {}

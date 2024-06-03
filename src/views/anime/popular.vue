@@ -3,9 +3,11 @@
     ref="scrollRef"
     v-infinite-scroll="getAnimeList"
     v-loading="loading"
-    class="w-[calc(100% - 48px)] flex flex-row flex-wrap gap-5 justify-around items-center box-border overflow-x-hidden overflow-y-auto"
+    class="w-[calc(100%-48px)] h-[calc(100%-48px)] flex flex-row flex-wrap gap-5 justify-around items-center box-border overflow-x-hidden overflow-y-auto"
     :infinite-scroll-immediate="false"
-    :style="{ height: realHeight ? realHeight + 'px' : 'calc(100% - 48px)' }"
+    :style="{
+      height: realHeight ? realHeight + 'px' : 'calc(100% - 48px)'
+    }"
   >
     <li
       v-for="(item, index) of animeList"
@@ -28,8 +30,8 @@ defineOptions({
 });
 
 const animeList = ref<Array<AnimeNode>>([]);
-const pageSize = ref(30);
-const offset = ref(0);
+const pageSize = ref<number>(30);
+const offset = ref<number>(0);
 const loading = ref<Boolean>(false);
 onMounted(() => {
   realHeight.value = scrollRef.value.offsetHeight - 48;
@@ -37,10 +39,12 @@ onMounted(() => {
     getAnimeList();
   });
 });
+// 搜索栏
+
 const getAnimeList = () => {
+  // 限制在1000以下
   if (offset.value > 1000) return;
   loading.value = true;
-  offset.value = offset.value + 10;
 
   getAnimeRankingListByType({
     ranking_type: "bypopularity",
