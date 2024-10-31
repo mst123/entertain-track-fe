@@ -6,8 +6,8 @@ import NoticeItem from "./noticeItem.vue";
 const props = defineProps({
   list: {
     type: Array as PropType<Array<ListItem>>,
-    default: () => []
-  }
+    default: () => [],
+  },
 });
 </script>
 

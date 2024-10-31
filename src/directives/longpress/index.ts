@@ -59,5 +59,5 @@ export const longpress: Directive = {
         '[Directive: longpress]: need callback and callback must be a function! Like v-longpress="callback"'
       );
     }
-  }
+  },
 };

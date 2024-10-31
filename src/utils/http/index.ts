@@ -1,13 +1,13 @@
 import Axios, {
   type AxiosInstance,
   type AxiosRequestConfig,
-  type CustomParamsSerializer
+  type CustomParamsSerializer,
 } from "axios";
 import type {
   PureHttpError,
   RequestMethods,
   PureHttpResponse,
-  PureHttpRequestConfig
+  PureHttpRequestConfig,
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
@@ -24,12 +24,12 @@ const defaultConfig: AxiosRequestConfig = {
   headers: {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json",
-    "X-Requested-With": "XMLHttpRequest"
+    "X-Requested-With": "XMLHttpRequest",
   },
   // 数组格式参数序列化（https://github.com/axios/axios/issues/5142）
   paramsSerializer: {
-    serialize: stringify as unknown as CustomParamsSerializer
-  }
+    serialize: stringify as unknown as CustomParamsSerializer,
+  },
 };
 
 class PureHttp {
@@ -98,9 +98,6 @@ class PureHttp {
     instance.interceptors.response.use(
       (response: PureHttpResponse) => {
         const $config = response.config;
-        console.log(response);
-        console.log($config);
-
         // 关闭进度条动画
         NProgress.done();
         // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
@@ -168,10 +165,9 @@ class PureHttp {
       method,
       url,
       ...param,
-      ...axiosConfig
+      ...axiosConfig,
     } as PureHttpRequestConfig;
 
-    // 单独处理自定义请求/响应回调
     return new Promise((resolve, reject) => {
       PureHttp.axiosInstance
         .request(config)
@@ -184,18 +180,34 @@ class PureHttp {
     });
   }
 
-  /** 单独抽离的post工具函数 */
-  public post<T, P>(url: string, config?: AxiosRequestConfig<T>): Promise<P> {
-    return this.request<P>("post", url, config);
+  public post<T, P>(
+    url: string,
+    data: T,
+    config?: AxiosRequestConfig
+  ): Promise<P> {
+    return this.request<P>("post", url, { data, ...(config || {}) });
   }
-
-  /** 单独抽离的get工具函数 */
+  public put<T, P>(
+    url: string,
+    data: T,
+    config?: AxiosRequestConfig
+  ): Promise<P> {
+    return this.request<P>("put", url, { data, ...(config || {}) });
+  }
   public get<T, P>(
     url: string,
     params: T,
     config?: AxiosRequestConfig
   ): Promise<P> {
-    return this.request<P>("get", url, { params, ...config });
+    return this.request<P>("get", url, { params, ...(config || {}) });
+  }
+
+  public delete<T, P>(
+    url: string,
+    params: T,
+    config?: AxiosRequestConfig
+  ): Promise<P> {
+    return this.request<P>("delete", url, { params, ...(config || {}) });
   }
 }
 

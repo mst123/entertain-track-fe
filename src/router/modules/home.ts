@@ -10,7 +10,7 @@ export default {
   meta: {
     icon: "ep:home-filled",
     title: $t("menus.hshome"),
-    rank: 0
+    rank: 0,
   },
   children: [
     {
@@ -19,8 +19,8 @@ export default {
       component: () => import("@/views/welcome/index.vue"),
       meta: {
         title: $t("menus.hshome"),
-        showLink: VITE_HIDE_HOME === "true" ? false : true
-      }
-    }
-  ]
+        showLink: VITE_HIDE_HOME === "true" ? false : true,
+      },
+    },
+  ],
 } satisfies RouteConfigsTable;

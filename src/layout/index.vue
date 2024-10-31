@@ -18,7 +18,7 @@
     <div
       :class="[
         'main-container',
-        pureSetting.hiddenSideBar ? 'main-hidden' : ''
+        pureSetting.hiddenSideBar ? 'main-hidden' : '',
       ]"
     >
       <div v-if="set.fixedHeader">
@@ -58,13 +58,13 @@ import {
   computed,
   onMounted,
   onBeforeMount,
-  defineComponent
+  defineComponent,
 } from "vue";
 import {
   useDark,
   useGlobal,
   deviceDetection,
-  useResizeObserver
+  useResizeObserver,
 } from "@pureadmin/utils";
 
 import navbar from "./components/navbar.vue";
@@ -100,13 +100,13 @@ const set: setType = reactive({
       hideSidebar: !set.sidebar.opened,
       openSidebar: set.sidebar.opened,
       withoutAnimation: set.sidebar.withoutAnimation,
-      mobile: set.device === "mobile"
+      mobile: set.device === "mobile",
     };
   }),
 
   hideTabs: computed(() => {
     return $storage?.configure.hideTabs;
-  })
+  }),
 });
 
 function setTheme(layoutModel: string) {
@@ -118,7 +118,7 @@ function setTheme(layoutModel: string) {
     sidebarStatus: $storage.layout?.sidebarStatus,
     epThemeColor: $storage.layout?.epThemeColor,
     themeColor: $storage.layout?.themeColor,
-    overallStyle: $storage.layout?.overallStyle
+    overallStyle: $storage.layout?.overallStyle,
   };
 }
 
@@ -178,8 +178,8 @@ const layoutHeader = defineComponent({
             ? isDark.value
               ? "box-shadow: 0 1px 4px #0d0d0d"
               : "box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08)"
-            : ""
-        ]
+            : "",
+        ],
       },
       {
         default: () => [
@@ -190,11 +190,11 @@ const layoutHeader = defineComponent({
           !pureSetting.hiddenSideBar && layout.value.includes("horizontal")
             ? h(Horizontal)
             : null,
-          h(tag)
-        ]
+          h(tag),
+        ],
       }
     );
-  }
+  },
 });
 </script>
 

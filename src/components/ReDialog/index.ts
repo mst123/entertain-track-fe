@@ -7,7 +7,7 @@ import type {
   ArgsType,
   DialogProps,
   ButtonProps,
-  DialogOptions
+  DialogOptions,
 } from "./type";
 
 const dialogStore = ref<Array<DialogOptions>>([]);
@@ -63,5 +63,5 @@ export {
   addDialog,
   closeDialog,
   updateDialog,
-  closeAllDialog
+  closeAllDialog,
 };

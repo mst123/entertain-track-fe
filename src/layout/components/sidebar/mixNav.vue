@@ -30,7 +30,7 @@ const {
   getDivStyle,
   avatarsStyle,
   getDropdownItemStyle,
-  getDropdownItemClass
+  getDropdownItemClass,
 } = useNav();
 
 function getDefaultActive(routePath) {

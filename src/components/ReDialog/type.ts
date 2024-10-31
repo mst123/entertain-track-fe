@@ -104,7 +104,7 @@ type ButtonProps = {
   /** 点击按钮后触发的回调 */
   btnClick?: ({
     dialog,
-    button
+    button,
   }: {
     /** 当前 `Dialog` 信息 */
     dialog: BtnClickDialog;
@@ -125,7 +125,7 @@ interface DialogOptions extends DialogProps {
   headerRenderer?: ({
     close,
     titleId,
-    titleClass
+    titleClass,
   }: {
     close: Function;
     titleId: string;
@@ -134,7 +134,7 @@ interface DialogOptions extends DialogProps {
   /** 自定义内容渲染器 */
   contentRenderer?: ({
     options,
-    index
+    index,
   }: {
     options: DialogOptions;
     index: number;
@@ -142,7 +142,7 @@ interface DialogOptions extends DialogProps {
   /** 自定义按钮操作区的内容渲染器，会覆盖`footerButtons`以及默认的 `取消` 和 `确定` 按钮 */
   footerRenderer?: ({
     options,
-    index
+    index,
   }: {
     options: DialogOptions;
     index: number;
@@ -152,7 +152,7 @@ interface DialogOptions extends DialogProps {
   /** `Dialog` 打开后的回调 */
   open?: ({
     options,
-    index
+    index,
   }: {
     options: DialogOptions;
     index: number;
@@ -160,7 +160,7 @@ interface DialogOptions extends DialogProps {
   /** `Dialog` 关闭后的回调（只有点击右上角关闭按钮或空白页或按下了esc键关闭页面时才会触发） */
   close?: ({
     options,
-    index
+    index,
   }: {
     options: DialogOptions;
     index: number;
@@ -169,7 +169,7 @@ interface DialogOptions extends DialogProps {
   closeCallBack?: ({
     options,
     index,
-    args
+    args,
   }: {
     options: DialogOptions;
     index: number;
@@ -178,7 +178,7 @@ interface DialogOptions extends DialogProps {
   /** 输入焦点聚焦在 `Dialog` 内容时的回调 */
   openAutoFocus?: ({
     options,
-    index
+    index,
   }: {
     options: DialogOptions;
     index: number;
@@ -186,7 +186,7 @@ interface DialogOptions extends DialogProps {
   /** 输入焦点从 `Dialog` 内容失焦时的回调 */
   closeAutoFocus?: ({
     options,
-    index
+    index,
   }: {
     options: DialogOptions;
     index: number;
@@ -196,7 +196,7 @@ interface DialogOptions extends DialogProps {
     done: Function,
     {
       options,
-      index
+      index,
     }: {
       options: DialogOptions;
       index: number;
@@ -207,7 +207,7 @@ interface DialogOptions extends DialogProps {
     done: Function,
     {
       options,
-      index
+      index,
     }: {
       options: DialogOptions;
       index: number;

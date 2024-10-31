@@ -3,7 +3,7 @@ import {
   isObject,
   isArray,
   debounce,
-  throttle
+  throttle,
 } from "@pureadmin/utils";
 import { useEventListener } from "@vueuse/core";
 import type { Directive, DirectiveBinding } from "vue";
@@ -51,5 +51,5 @@ export const optimize: Directive = {
         "[Directive: optimize]: only `debounce` and `throttle` are supported"
       );
     }
-  }
+  },
 };

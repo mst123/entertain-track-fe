@@ -26,7 +26,7 @@ const {
   userAvatar,
   avatarsStyle,
   getDropdownItemStyle,
-  getDropdownItemClass
+  getDropdownItemClass,
 } = useNav();
 
 const defaultActive = computed(() =>

@@ -10,7 +10,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  isActive: false
+  isActive: false,
 });
 
 const { tooltipEffect } = useNav();
@@ -24,7 +24,7 @@ const iconClass = computed(() => {
     "inline-block",
     "align-middle",
     "cursor-pointer",
-    "duration-[100ms]"
+    "duration-[100ms]",
   ];
 });
 
@@ -47,7 +47,7 @@ const toggleClick = () => {
         content: props.isActive ? '点击折叠' : '点击展开',
         theme: tooltipEffect,
         hideOnClick: 'toggle',
-        placement: 'right'
+        placement: 'right',
       }"
       :icon="MenuFold"
       :class="[iconClass, themeColor === 'light' ? '' : 'text-primary']"

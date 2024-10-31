@@ -3,7 +3,7 @@ import {
   type RouteRecordRaw,
   type RouteComponent,
   createWebHistory,
-  createWebHashHistory
+  createWebHashHistory,
 } from "vue-router";
 import { router } from "./index";
 import { isProxy, toRaw } from "vue";
@@ -14,7 +14,7 @@ import {
   isAllEmpty,
   intersection,
   storageLocal,
-  isIncludeAllChildren
+  isIncludeAllChildren,
 } from "@pureadmin/utils";
 import type { menuType } from "@/layout/types";
 import { buildHierarchyTree } from "@/utils/tree";
@@ -140,7 +140,7 @@ function addPathMatch() {
     router.addRoute({
       path: "/:pathMatch(.*)",
       name: "pathMatch",
-      redirect: "/error/404"
+      redirect: "/error/404",
     });
   }
 }
@@ -180,7 +180,7 @@ function formatTwoStageRoutes(routesList: RouteRecordRaw[]) {
         path: v.path,
         redirect: v.redirect,
         meta: v.meta,
-        children: []
+        children: [],
       });
     } else {
       newRoutesList[0]?.children.push({ ...v });
@@ -195,30 +195,30 @@ function handleAliveRoute({ name }: ToRouteType, mode?: string) {
     case "add":
       usePermissionStoreHook().cacheOperate({
         mode: "add",
-        name
+        name,
       });
       break;
     case "delete":
       usePermissionStoreHook().cacheOperate({
         mode: "delete",
-        name
+        name,
       });
       break;
     case "refresh":
       usePermissionStoreHook().cacheOperate({
         mode: "refresh",
-        name
+        name,
       });
       break;
     default:
       usePermissionStoreHook().cacheOperate({
         mode: "delete",
-        name
+        name,
       });
       useTimeoutFn(() => {
         usePermissionStoreHook().cacheOperate({
           mode: "add",
-          name
+          name,
         });
       }, 100);
   }
@@ -315,5 +315,5 @@ export {
   handleAliveRoute,
   formatTwoStageRoutes,
   formatFlatteningRoutes,
-  filterNoPermissionTree
+  filterNoPermissionTree,
 };

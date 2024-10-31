@@ -15,12 +15,12 @@ export default defineComponent({
   name: "app",
   components: {
     [ElConfigProvider.name]: ElConfigProvider,
-    ReDialog
+    ReDialog,
   },
   computed: {
     currentLocale() {
       return this.$storage.locale?.locale === "zh" ? zhCn : en;
-    }
-  }
+    },
+  },
 });
 </script>

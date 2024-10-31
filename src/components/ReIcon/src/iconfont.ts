@@ -6,8 +6,8 @@ export default defineComponent({
   props: {
     icon: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   render() {
     const attrs = this.$attrs;
@@ -16,7 +16,7 @@ export default defineComponent({
         "i",
         {
           class: "iconfont",
-          ...attrs
+          ...attrs,
         },
         this.icon
       );
@@ -28,21 +28,21 @@ export default defineComponent({
         "svg",
         {
           class: "icon-svg",
-          "aria-hidden": true
+          "aria-hidden": true,
         },
         {
           default: () => [
             h("use", {
-              "xlink:href": `#${this.icon}`
-            })
-          ]
+              "xlink:href": `#${this.icon}`,
+            }),
+          ],
         }
       );
     } else {
       return h("i", {
         class: `iconfont ${this.icon}`,
-        ...attrs
+        ...attrs,
       });
     }
-  }
+  },
 });

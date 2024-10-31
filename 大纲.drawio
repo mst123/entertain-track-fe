@@ -1,0 +1,115 @@
+<mxfile host="65bd71144e">
+    <diagram id="wVG_zeSb_K0RIXpEG8TA" name="第 1 页">
+        <mxGraphModel dx="1351" dy="931" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="54" value="" style="edgeStyle=none;html=1;" parent="1" source="2" target="53" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="登录、注册、找回密码" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="100" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="漫画" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="370" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="动漫" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="240" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="" style="edgeStyle=none;html=1;" parent="1" source="5" target="11" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="游戏" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="490" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="书籍" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="640" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="仪表盘？&lt;br&gt;正反馈" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="1180" y="830" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="优先级&lt;br&gt;书籍分类（技术书不做统计）&lt;br&gt;名字、简介&lt;br&gt;看书的一个记录，心得记在语雀，时间记在这&lt;br&gt;待收集的书单&lt;br&gt;已拥有的书单&lt;br&gt;所属位置 goodnotes kindle&lt;br&gt;想看 已看 是否收集" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="600" width="350" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="" style="edgeStyle=none;html=1;" parent="1" source="11" target="21" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="近期游玩统计，拥有游戏的统计" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="530" y="490" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="两个类似" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="300" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="" style="edgeStyle=none;html=1;" parent="1" source="18" target="12" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;flipH=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="270" width="60" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="" style="edgeStyle=none;html=1;" parent="1" source="21" target="28" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="steamAPI" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="820" y="490" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="获取游戏库和最近游玩和个人信息" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="1020" y="490" width="260" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="" style="edgeStyle=none;html=1;" parent="1" source="34" target="35" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="菜谱" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="245" y="1142.5" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="" style="edgeStyle=none;html=1;" parent="1" source="35" target="39" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="" style="edgeStyle=none;html=1;" parent="1" source="35" target="41" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="标签&lt;br&gt;耗时&lt;br&gt;原材料&lt;br&gt;几人份？&lt;br&gt;步骤&lt;br&gt;个人评分" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="565" y="1100" width="220" height="145" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="图片&lt;br&gt;吃的图片都可以" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="930" y="1142.5" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="随机算法" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="615" y="1320" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="" style="edgeStyle=none;html=1;" parent="1" source="43" target="44" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" value="" style="edgeStyle=none;html=1;" parent="1" source="43" target="46" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="想要收集的东西（计划想要的）" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="230" y="830" width="230" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="44" value="游戏、动漫、书籍、菜品、电子设备、手办、工具" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="830" width="240" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" value="" style="edgeStyle=none;html=1;" parent="1" source="46" target="48" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="46" value="已经收集的东西" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="230" y="980" width="230" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" value="是不是可以做个echart" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="582.5" y="980" width="195" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" value="对于菜单的权限控制" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="100" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="favorite" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="1700" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="56" value="类型&lt;br&gt;正在进行" style="shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;" parent="1" vertex="1">
+                    <mxGeometry x="460" y="1640" width="460" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="57" value="正在看的&lt;br&gt;想看的&lt;br&gt;已经拥有的&lt;br&gt;想要的" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="1930" width="120" height="90" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

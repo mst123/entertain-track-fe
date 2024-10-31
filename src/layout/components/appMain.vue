@@ -7,7 +7,7 @@ import { h, computed, Transition, defineComponent } from "vue";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 
 const props = defineProps({
-  fixedHeader: Boolean
+  fixedHeader: Boolean,
 });
 
 const { $storage, $config } = useGlobal<GlobalPropertiesApi>();
@@ -46,7 +46,7 @@ const getSectionStyle = computed(() => {
           hideTabs.value
             ? "min-height: calc(100vh - 48px);"
             : "min-height: calc(100vh - 86px);"
-        }`
+        }`,
   ];
 });
 
@@ -54,8 +54,8 @@ const transitionMain = defineComponent({
   props: {
     route: {
       type: undefined,
-      required: true
-    }
+      required: true,
+    },
   },
   render() {
     const transitionName =
@@ -73,13 +73,13 @@ const transitionMain = defineComponent({
           ? `animate__animated ${leaveTransition}`
           : undefined,
         mode: "out-in",
-        appear: true
+        appear: true,
       },
       {
-        default: () => [this.$slots.default()]
+        default: () => [this.$slots.default()],
       }
     );
-  }
+  },
 });
 </script>
 
@@ -96,13 +96,13 @@ const transitionMain = defineComponent({
               v-if="props.fixedHeader"
               :wrap-style="{
                 display: 'flex',
-                'flex-wrap': 'wrap'
+                'flex-wrap': 'wrap',
               }"
               :view-style="{
                 display: 'flex',
                 flex: 'auto',
                 overflow: 'auto',
-                'flex-direction': 'column'
+                'flex-direction': 'column',
               }"
             >
               <el-backtop

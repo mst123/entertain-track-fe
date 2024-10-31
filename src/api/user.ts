@@ -14,7 +14,7 @@ export type LoginResult = {
   refresh: RefreshTokenResult;
 };
 
-export type UserResult = API.CommonRes<LoginResult>;
+export type UserResult = CommonRes<LoginResult>;
 
 export type RefreshTokenResult = {
   refreshToken: string;
@@ -30,7 +30,7 @@ export const getLogin = (data?: object) => {
 /** 刷新token */
 export const refreshTokenApi = (data?: object) => {
   return http.request<RefreshTokenResult>("post", "/api/get-refresh-token", {
-    data
+    data,
   });
 };
 /** 登出 */

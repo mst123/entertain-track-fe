@@ -7,7 +7,7 @@ import {
   computed,
   nextTick,
   onUnmounted,
-  onBeforeMount
+  onBeforeMount,
 } from "vue";
 import panel from "../panel/index.vue";
 import { emitter } from "@/utils/mitt";
@@ -39,7 +39,7 @@ const {
   themeColors,
   toggleClass,
   dataThemeChange,
-  setLayoutThemeColor
+  setLayoutThemeColor,
 } = useDataThemeChange();
 
 /* body添加layout属性，作用于src/style/sidebar.scss */
@@ -47,7 +47,7 @@ if (unref(layoutTheme)) {
   const layout = unref(layoutTheme).layout;
   const theme = unref(layoutTheme).theme;
   toggleTheme({
-    scopeName: `layout-theme-${theme}`
+    scopeName: `layout-theme-${theme}`,
   });
   setLayoutModel(layout);
 }
@@ -64,7 +64,7 @@ const settings = reactive({
   showLogo: $storage.configure.showLogo,
   showModel: $storage.configure.showModel,
   hideFooter: $storage.configure.hideFooter,
-  multiTagsCache: $storage.configure.multiTagsCache
+  multiTagsCache: $storage.configure.multiTagsCache,
 });
 
 const getThemeColorStyle = computed(() => {
@@ -167,22 +167,22 @@ const themeOptions = computed<Array<OptionsType>>(() => {
       icon: dayIcon,
       theme: "light",
       tip: "清新启航，点亮舒适的工作界面",
-      iconAttrs: { fill: isDark.value ? "#fff" : "#000" }
+      iconAttrs: { fill: isDark.value ? "#fff" : "#000" },
     },
     {
       label: "深色",
       icon: darkIcon,
       theme: "dark",
       tip: "月光序曲，沉醉于夜的静谧雅致",
-      iconAttrs: { fill: isDark.value ? "#fff" : "#000" }
+      iconAttrs: { fill: isDark.value ? "#fff" : "#000" },
     },
     {
       label: "自动",
       icon: systemIcon,
       theme: "system",
       tip: "同步时光，界面随晨昏自然呼应",
-      iconAttrs: { fill: isDark.value ? "#fff" : "#000" }
-    }
+      iconAttrs: { fill: isDark.value ? "#fff" : "#000" },
+    },
   ];
 });
 
@@ -190,13 +190,13 @@ const markOptions: Array<OptionsType> = [
   {
     label: "灵动",
     tip: "灵动标签，添趣生辉",
-    value: "smart"
+    value: "smart",
   },
   {
     label: "卡片",
     tip: "卡片标签，高效浏览",
-    value: "card"
-  }
+    value: "card",
+  },
 ];
 
 /** 设置导航模式 */
@@ -210,7 +210,7 @@ function setLayoutModel(layout: string) {
     sidebarStatus: $storage.layout?.sidebarStatus,
     epThemeColor: $storage.layout?.epThemeColor,
     themeColor: $storage.layout?.themeColor,
-    overallStyle: $storage.layout?.overallStyle
+    overallStyle: $storage.layout?.overallStyle,
   };
   useAppStoreHook().setLayout(layout);
 }
@@ -320,7 +320,7 @@ onUnmounted(() => removeMatchMedia);
           ref="verticalRef"
           v-tippy="{
             content: '左侧菜单，亲切熟悉',
-            zIndex: 41000
+            zIndex: 41000,
           }"
           :class="layoutTheme.layout === 'vertical' ? 'is-select' : ''"
           @click="setLayoutModel('vertical')"
@@ -333,7 +333,7 @@ onUnmounted(() => removeMatchMedia);
           ref="horizontalRef"
           v-tippy="{
             content: '顶部菜单，简洁概览',
-            zIndex: 41000
+            zIndex: 41000,
           }"
           :class="layoutTheme.layout === 'horizontal' ? 'is-select' : ''"
           @click="setLayoutModel('horizontal')"
@@ -346,7 +346,7 @@ onUnmounted(() => removeMatchMedia);
           ref="mixRef"
           v-tippy="{
             content: '混合菜单，灵活多变',
-            zIndex: 41000
+            zIndex: 41000,
           }"
           :class="layoutTheme.layout === 'mix' ? 'is-select' : ''"
           @click="setLayoutModel('mix')"

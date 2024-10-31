@@ -16,19 +16,19 @@ import {
   findRouteByPath,
   handleAliveRoute,
   formatTwoStageRoutes,
-  formatFlatteningRoutes
+  formatFlatteningRoutes,
 } from "./utils";
 import {
   type Router,
   createRouter,
   type RouteRecordRaw,
-  type RouteComponent
+  type RouteComponent,
 } from "vue-router";
 import {
   type DataInfo,
   userKey,
   removeToken,
-  multipleTabsKey
+  multipleTabsKey,
 } from "@/utils/auth";
 
 /** 自动导入全部静态路由，无需再手动引入！匹配 src/router/modules 目录（任何嵌套级别）中具有 .ts 扩展名的所有文件，除了 remaining.ts 文件
@@ -38,7 +38,7 @@ import {
 const modules: Record<string, any> = import.meta.glob(
   ["./modules/**/*.ts", "!./modules/**/remaining.ts"],
   {
-    eager: true
+    eager: true,
   }
 );
 
@@ -81,7 +81,7 @@ export const router: Router = createRouter({
         }
       }
     });
-  }
+  },
 });
 
 /** 重置路由 */
@@ -165,7 +165,7 @@ router.beforeEach((to: ToRouteType, _from, next) => {
             useMultiTagsStoreHook().handleTags("push", {
               path: route.path,
               name: route.name,
-              meta: route.meta
+              meta: route.meta,
             });
           }
         }

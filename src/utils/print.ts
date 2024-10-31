@@ -16,7 +16,7 @@ const Print = function (dom, options?: object): PrintFunction {
     // Callback before printing
     printBeforeFn: null,
     // Callback after printing
-    printDoneCallBack: null
+    printDoneCallBack: null,
   };
   for (const key in this.conf) {
     // eslint-disable-next-line no-prototype-builtins
@@ -208,7 +208,7 @@ Print.prototype = {
         });
       });
     }
-  }
+  },
 };
 
 export default Print;

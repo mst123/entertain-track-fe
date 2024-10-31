@@ -67,7 +67,7 @@ import { getAnimeRankingBySeason } from "@/api/anime/index";
 import dayjs from "dayjs";
 
 defineOptions({
-  name: "AnimalSeason"
+  name: "AnimalSeason",
 });
 const scrollRef = ref<HTMLElement>(null);
 const loading = ref<Boolean>(false);
@@ -94,7 +94,7 @@ const searchValue: SearchValue = reactive({
   limit: 30,
   offset: 0,
   fields:
-    "id,title,main_picture,rank,popularity,num_list_users,num_scoring_users,mean,rating"
+    "id,title,main_picture,rank,popularity,num_list_users,num_scoring_users,mean,rating",
 });
 
 const animeList = ref<Array<AnimeNode>>([]);

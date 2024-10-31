@@ -3,7 +3,7 @@ import { getTopMenu } from "@/router/utils";
 import { useNav } from "@/layout/hooks/useNav";
 
 const props = defineProps({
-  collapse: Boolean
+  collapse: Boolean,
 });
 
 const { title, getLogo } = useNav();

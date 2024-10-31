@@ -25,7 +25,7 @@ export function getPluginsList(
     VueI18nPlugin({
       runtimeOnly: true,
       compositionOnly: true,
-      include: [pathResolve("../locales/**")]
+      include: [pathResolve("../locales/**")],
     }),
     viteBuildInfo(),
     /**
@@ -38,8 +38,8 @@ export function getPluginsList(
     themePreprocessorPlugin({
       scss: {
         multipleScopeVars: genScssMultipleScopeVars(),
-        extract: true
-      }
+        extract: true,
+      },
     }),
     // svg组件化支持
     svgLoader(),
@@ -50,6 +50,6 @@ export function getPluginsList(
     // 打包分析
     lifecycle === "report"
       ? visualizer({ open: true, brotliSize: true, filename: "report.html" })
-      : (null as any)
+      : (null as any),
   ];
 }

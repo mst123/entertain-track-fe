@@ -13,7 +13,7 @@ import {
   delay,
   isEqual,
   isAllEmpty,
-  useResizeObserver
+  useResizeObserver,
 } from "@pureadmin/utils";
 
 import ExitFullscreen from "@iconify-icons/ri/fullscreen-exit-fill";
@@ -49,7 +49,7 @@ const {
   onMouseenter,
   onMouseleave,
   transformI18n,
-  onContentFullScreen
+  onContentFullScreen,
 } = useTags();
 
 const tabDom = ref();
@@ -185,7 +185,7 @@ function dynamicRouteTag(value: string): void {
           useMultiTagsStoreHook().handleTags("push", {
             path: value,
             meta: arrItem.meta,
-            name: arrItem.name
+            name: arrItem.name,
           });
         } else {
           if (arrItem.children && arrItem.children.length > 0) {
@@ -203,7 +203,7 @@ function onFresh() {
   const { fullPath, query } = unref(route);
   router.replace({
     path: "/redirect" + fullPath,
-    query
+    query,
   });
   handleAliveRoute(route as ToRouteType, "refresh");
 }
@@ -231,12 +231,12 @@ function deleteDynamicTag(obj: any, current: any, tag?: string) {
     if (other) {
       useMultiTagsStoreHook().handleTags("equal", [
         VITE_HIDE_HOME === "false" ? routerArrays[0] : toRaw(getTopMenu()),
-        obj
+        obj,
       ]);
     } else {
       useMultiTagsStoreHook().handleTags("splice", "", {
         startIndex,
-        length
+        length,
       }) as any;
     }
     dynamicTagView();
@@ -291,7 +291,7 @@ function onClickDrop(key, item, selectRoute?: RouteConfigs) {
       meta: selectRoute.meta,
       name: selectRoute.name,
       query: selectRoute?.query,
-      params: selectRoute?.params
+      params: selectRoute?.params,
     };
   } else {
     selectTagRoute = { path: route.path, meta: route.meta };
@@ -323,7 +323,7 @@ function onClickDrop(key, item, selectRoute?: RouteConfigs) {
       // 关闭全部标签页
       useMultiTagsStoreHook().handleTags("splice", "", {
         startIndex: 1,
-        length: multiTags.value.length
+        length: multiTags.value.length,
       });
       router.push(topPath);
       handleAliveRoute(route as ToRouteType);
@@ -486,12 +486,12 @@ function tagOnClick(item) {
     if (item.query) {
       router.push({
         name,
-        query: item.query
+        query: item.query,
       });
     } else if (item.params) {
       router.push({
         name,
-        params: item.params
+        params: item.params,
       });
     } else {
       router.push({ name });
@@ -503,7 +503,7 @@ function tagOnClick(item) {
 }
 
 onClickOutside(contextmenuRef, closeMenu, {
-  detectIframe: true
+  detectIframe: true,
 });
 
 watch(route, () => {

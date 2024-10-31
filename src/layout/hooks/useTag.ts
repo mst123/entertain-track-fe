@@ -5,7 +5,7 @@ import {
   reactive,
   onMounted,
   type CSSProperties,
-  getCurrentInstance
+  getCurrentInstance,
 } from "vue";
 import type { tagsViewsType } from "../types";
 import { useRoute, useRouter } from "vue-router";
@@ -18,7 +18,7 @@ import {
   isBoolean,
   storageLocal,
   toggleClass,
-  hasClass
+  hasClass,
 } from "@pureadmin/utils";
 
 import Fullscreen from "@iconify-icons/ri/fullscreen-fill";
@@ -67,57 +67,57 @@ export function useTags() {
       text: $t("buttons.hsreload"),
       divided: false,
       disabled: false,
-      show: true
+      show: true,
     },
     {
       icon: Close,
       text: $t("buttons.hscloseCurrentTab"),
       divided: false,
       disabled: multiTags.value.length > 1 ? false : true,
-      show: true
+      show: true,
     },
     {
       icon: CloseLeftTags,
       text: $t("buttons.hscloseLeftTabs"),
       divided: true,
       disabled: multiTags.value.length > 1 ? false : true,
-      show: true
+      show: true,
     },
     {
       icon: CloseRightTags,
       text: $t("buttons.hscloseRightTabs"),
       divided: false,
       disabled: multiTags.value.length > 1 ? false : true,
-      show: true
+      show: true,
     },
     {
       icon: CloseOtherTags,
       text: $t("buttons.hscloseOtherTabs"),
       divided: true,
       disabled: multiTags.value.length > 2 ? false : true,
-      show: true
+      show: true,
     },
     {
       icon: CloseAllTags,
       text: $t("buttons.hscloseAllTabs"),
       divided: false,
       disabled: multiTags.value.length > 1 ? false : true,
-      show: true
+      show: true,
     },
     {
       icon: Fullscreen,
       text: $t("buttons.hswholeFullScreen"),
       divided: true,
       disabled: false,
-      show: true
+      show: true,
     },
     {
       icon: Fullscreen,
       text: $t("buttons.hscontentFullScreen"),
       divided: false,
       disabled: false,
-      show: true
-    }
+      show: true,
+    },
   ]);
 
   function conditionHandle(item, previous, next) {
@@ -154,7 +154,7 @@ export function useTags() {
   const getTabStyle = computed((): CSSProperties => {
     return {
       transform: `translateX(${translateX.value}px)`,
-      transition: isScrolling.value ? "none" : "transform 0.5s ease-in-out"
+      transition: isScrolling.value ? "none" : "transform 0.5s ease-in-out",
     };
   });
 
@@ -243,6 +243,6 @@ export function useTags() {
     onMouseenter,
     onMouseleave,
     transformI18n,
-    onContentFullScreen
+    onContentFullScreen,
   };
 }

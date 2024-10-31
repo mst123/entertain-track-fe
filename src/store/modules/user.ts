@@ -18,7 +18,7 @@ export const useUserStore = defineStore({
     roles: storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [],
     // 刷新用的token
     refreshToken:
-      storageLocal().getItem<DataInfo<number>>(userKey)?.refreshToken ?? ""
+      storageLocal().getItem<DataInfo<number>>(userKey)?.refreshToken ?? "",
   }),
   actions: {
     /** 存储用户名 */
@@ -39,7 +39,7 @@ export const useUserStore = defineStore({
               setToken({
                 ...data.refresh,
                 username: data.user.username,
-                roles: [data.user.userPermission]
+                roles: [data.user.userPermission],
               });
               resolve(res);
             }
@@ -84,8 +84,8 @@ export const useUserStore = defineStore({
             reject(error);
           });
       });
-    }
-  }
+    },
+  },
 });
 
 export function useUserStoreHook() {

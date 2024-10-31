@@ -26,12 +26,12 @@ const siphonI18n = (function () {
 export const localesConfigs = {
   zh: {
     ...siphonI18n("zh-CN"),
-    ...zhLocale
+    ...zhLocale,
   },
   en: {
     ...siphonI18n("en"),
-    ...enLocale
-  }
+    ...enLocale,
+  },
 };
 
 /** 获取对象中所有嵌套对象的key键，并将它们用点号分割组成字符串 */
@@ -108,7 +108,7 @@ export const i18n: I18n = createI18n({
       `${responsiveStorageNameSpace()}locale`
     )?.locale ?? "zh",
   fallbackLocale: "en",
-  messages: localesConfigs
+  messages: localesConfigs,
 });
 
 export function useI18n(app: App) {

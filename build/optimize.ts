@@ -18,7 +18,7 @@ const include = [
   "sortablejs",
   "@vueuse/core",
   "@pureadmin/utils",
-  "responsive-storage"
+  "responsive-storage",
 ];
 
 /**
@@ -28,7 +28,7 @@ const include = [
 const exclude = [
   "@iconify-icons/ep",
   "@iconify-icons/ri",
-  "@pureadmin/theme/dist/browser-utils"
+  "@pureadmin/theme/dist/browser-utils",
 ];
 
 export { include, exclude };

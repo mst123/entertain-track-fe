@@ -1,0 +1,46 @@
+<mxfile host="65bd71144e">
+    <diagram id="wVG_zeSb_K0RIXpEG8TA" name="第 1 页">
+        <mxGraphModel dx="1481" dy="786" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="44" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="42" target="43">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="46" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="42" target="45">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="动漫" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="150" y="710" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="43" target="47">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="51" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="43" target="50">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="分类检索页" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="350" y="630" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="详情页" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="350" y="770" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" value="标记为喜欢、已看" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="570" y="630" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" value="" style="shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+                    <mxGeometry x="710" y="790" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="50" target="52">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="50" value="&lt;br&gt;是否标记为已看完（一般分季度，分别表示）&lt;br&gt;是否有标记为想看&lt;br&gt;排名&lt;br&gt;评分，评分人数&lt;br&gt;简介" style="shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+                    <mxGeometry x="245" y="310" width="330" height="250" as="geometry"/>
+                </mxCell>
+                <mxCell id="52" value="数据库中有一张数据表&lt;br&gt;类型 动画 漫画 书籍 game 等等&lt;br&gt;状态 想看 已看 正在看 不互斥&lt;br&gt;唯一编码 id&lt;br&gt;更新时间 xxx" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                    <mxGeometry x="780" y="330" width="300" height="205" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

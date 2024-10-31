@@ -147,7 +147,7 @@ export const handleTree = (
   const config = {
     id: id || "id",
     parentId: parentId || "parentId",
-    childrenList: children || "children"
+    childrenList: children || "children",
   };
 
   const childrenListMap: any = {};

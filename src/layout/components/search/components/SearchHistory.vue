@@ -29,7 +29,7 @@ const itemStyle = computed(() => {
       background:
         item?.path === active.value ? useEpThemeStoreHook().epThemeColor : "",
       color: item.path === active.value ? "#fff" : "",
-      fontSize: item.path === active.value ? "16px" : "14px"
+      fontSize: item.path === active.value ? "16px" : "14px",
     };
   };
 });
@@ -37,7 +37,7 @@ const itemStyle = computed(() => {
 const titleStyle = computed(() => {
   return {
     color: useEpThemeStoreHook().epThemeColor,
-    fontWeight: 500
+    fontWeight: 500,
   };
 });
 
@@ -47,7 +47,7 @@ const active = computed({
   },
   set(val: string) {
     emit("update:value", val);
-  }
+  },
 });
 
 watch(
@@ -126,7 +126,7 @@ watch(
           onEnd: event => {
             event.item.style.cursor = "pointer";
           },
-          onUpdate: handleChangeIndex
+          onUpdate: handleChangeIndex,
         });
         resizeResult();
       });

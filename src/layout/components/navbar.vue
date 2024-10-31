@@ -22,7 +22,7 @@ const {
   avatarsStyle,
   toggleSideBar,
   getDropdownItemStyle,
-  getDropdownItemClass
+  getDropdownItemClass,
 } = useNav();
 
 const { t, locale, translationCh, translationEn } = useTranslationLang();

@@ -13,14 +13,14 @@ export const useAppStore = defineStore({
           `${responsiveStorageNameSpace()}layout`
         )?.sidebarStatus ?? getConfig().SidebarStatus,
       withoutAnimation: false,
-      isClickCollapse: false
+      isClickCollapse: false,
     },
     // 这里的layout用于监听容器拖拉后恢复对应的导航模式
     layout:
       storageLocal().getItem<StorageConfigs>(
         `${responsiveStorageNameSpace()}layout`
       )?.layout ?? getConfig().Layout,
-    device: deviceDetection() ? "mobile" : "desktop"
+    device: deviceDetection() ? "mobile" : "desktop",
   }),
   getters: {
     getSidebarStatus(state) {
@@ -28,7 +28,7 @@ export const useAppStore = defineStore({
     },
     getDevice(state) {
       return state.device;
-    }
+    },
   },
   actions: {
     TOGGLE_SIDEBAR(opened?: boolean, resize?: string) {
@@ -59,8 +59,8 @@ export const useAppStore = defineStore({
     },
     setLayout(layout) {
       this.layout = layout;
-    }
-  }
+    },
+  },
 });
 
 export function useAppStoreHook() {

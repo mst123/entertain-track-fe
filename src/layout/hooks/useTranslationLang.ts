@@ -36,6 +36,6 @@ export function useTranslationLang(ref?: Ref) {
     route,
     locale,
     translationCh,
-    translationEn
+    translationEn,
   };
 }

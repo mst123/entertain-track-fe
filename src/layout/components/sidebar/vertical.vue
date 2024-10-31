@@ -24,7 +24,7 @@ const {
   isCollapse,
   tooltipEffect,
   menuSelect,
-  toggleSideBar
+  toggleSideBar,
 } = useNav();
 
 const subMenuData = ref([]);

@@ -6,7 +6,7 @@ import ArrowUpLine from "@iconify-icons/ri/arrow-up-line";
 import ArrowDownLine from "@iconify-icons/ri/arrow-down-line";
 
 const props = withDefaults(defineProps<{ total: number }>(), {
-  total: 0
+  total: 0,
 });
 
 const { device } = useNav();

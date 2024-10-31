@@ -74,3 +74,15 @@ interface PromiseFn<T = any, R = T> {
 interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
   $el: T;
 }
+
+// api
+enum Status {
+  Success = "success",
+  Error = "error",
+}
+
+interface CommonRes<T> {
+  status: Status;
+  data: T;
+  message: string;
+}

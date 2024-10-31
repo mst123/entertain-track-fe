@@ -66,8 +66,8 @@
                   {
                     required: true,
                     message: transformI18n($t('login.usernameReg')),
-                    trigger: 'blur'
-                  }
+                    trigger: 'blur',
+                  },
                 ]"
                 prop="email"
               >
@@ -137,7 +137,7 @@ import User from "@iconify-icons/ri/user-3-fill";
 import { error } from "console";
 
 defineOptions({
-  name: "Login"
+  name: "Login",
 });
 const router = useRouter();
 const loading = ref(false);
@@ -154,7 +154,7 @@ const { locale, translationCh, translationEn } = useTranslationLang();
 
 const ruleForm = reactive({
   email: "624952546@qq.com",
-  password: "clannad123"
+  password: "clannad123",
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {

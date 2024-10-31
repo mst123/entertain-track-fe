@@ -4,7 +4,7 @@ import { isUrl } from "@pureadmin/utils";
 import { menuType } from "@/layout/types";
 
 defineOptions({
-  name: "LinkItem"
+  name: "LinkItem",
 });
 
 const props = defineProps<{
@@ -17,11 +17,11 @@ const getLinkProps = (item: menuType) => {
     return {
       href: item.name,
       target: "_blank",
-      rel: "noopener"
+      rel: "noopener",
     };
   }
   return {
-    to: item
+    to: item,
   };
 };
 </script>

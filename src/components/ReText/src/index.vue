@@ -5,12 +5,12 @@ import { useTippy, type TippyOptions } from "vue-tippy";
 const props = defineProps({
   // 行数
   lineClamp: {
-    type: [String, Number]
+    type: [String, Number],
   },
   tippyProps: {
     type: Object as PropType<TippyOptions>,
-    default: () => ({})
-  }
+    default: () => ({}),
+  },
 });
 
 const $slots = useSlots();
@@ -30,7 +30,7 @@ const isTextEllipsis = (el: HTMLElement) => {
 
 const getTippyProps = () => ({
   content: h($slots.content || $slots.default),
-  ...props.tippyProps
+  ...props.tippyProps,
 });
 
 function handleHover(event: MouseEvent) {
@@ -52,7 +52,7 @@ onMounted(() => {
     v-bind="{
       truncated: !lineClamp,
       lineClamp,
-      ...$attrs
+      ...$attrs,
     }"
     ref="textRef"
     @mouseover.self="handleHover"

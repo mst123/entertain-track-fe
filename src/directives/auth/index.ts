@@ -11,5 +11,5 @@ export const auth: Directive = {
         "[Directive: auth]: need auths! Like v-auth=\"['btn.add','btn.edit']\""
       );
     }
-  }
+  },
 };

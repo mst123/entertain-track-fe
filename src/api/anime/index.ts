@@ -5,8 +5,8 @@ import type * as Anime from "@/api/anime/types/anime-detail";
 const headers = {
   headers: {
     Authorization: "",
-    [VITE_HEADER_PARAMETER_NAME]: VITE_CLIENT_ID
-  }
+    [VITE_HEADER_PARAMETER_NAME]: VITE_CLIENT_ID,
+  },
 };
 // 根据关键词查询动漫列表
 export function getAnimeListByKeyword(
@@ -40,7 +40,7 @@ export function getAnimeRankingBySeason(
     Anime.GET_ANIME_LIST_SEASON_RES
   >(`/anime/season/${params.year}/${params.season}`, params, {
     ...headers,
-    ...config
+    ...config,
   });
 }
 
@@ -54,7 +54,7 @@ export function getAnimeDetailByID(
     params,
     {
       ...headers,
-      ...config
+      ...config,
     }
   );
 }

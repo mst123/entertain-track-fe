@@ -39,7 +39,7 @@ export function setToken(data: DataInfo<number>) {
   expires = new Date().getTime() + expiresIn * 1000; // 如果后端直接设置时间戳，将此处代码改为expires = data.expires，然后把上面的DataInfo<Date>改成DataInfo<number>即可
 
   Cookies.set(multipleTabsKey, "true", {
-    expires
+    expires,
   });
   // 存放至pina
   useUserStoreHook().SET_USERNAME(username);
@@ -49,7 +49,7 @@ export function setToken(data: DataInfo<number>) {
     refreshToken,
     expires,
     username,
-    roles
+    roles,
   });
 }
 

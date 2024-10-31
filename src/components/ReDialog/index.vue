@@ -61,7 +61,7 @@
           @click="
             btn.btnClick({
               dialog: { options, index },
-              button: { btn, index: key }
+              button: { btn, index: key },
             })
           "
         >
@@ -78,7 +78,7 @@ import {
   dialogStore,
   type EventType,
   type ButtonProps,
-  type DialogOptions
+  type DialogOptions,
 } from "./index";
 import { ref, computed } from "vue";
 import { isFunction } from "@pureadmin/utils";
@@ -104,7 +104,7 @@ const footerButtons = computed(() => {
               } else {
                 done();
               }
-            }
+            },
           },
           {
             label: "确定",
@@ -119,8 +119,8 @@ const footerButtons = computed(() => {
               } else {
                 done();
               }
-            }
-          }
+            },
+          },
         ] as Array<ButtonProps>);
   };
 });
@@ -131,7 +131,7 @@ const fullscreenClass = computed(() => {
     "el-dialog__close",
     "-translate-x-2",
     "cursor-pointer",
-    "hover:!text-[red]"
+    "hover:!text-[red]",
   ];
 });
 
