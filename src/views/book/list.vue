@@ -1,7 +1,7 @@
 <template>
   <el-container class="h-[calc(100vh-96px)]">
     <el-header height="50">
-      <el-form :inline="true" :model="searchValue">
+      <el-form :inline="true">
         <el-form-item label="书名">
           <el-input v-model="searchValue.name" placeholder="请输入" />
         </el-form-item>
@@ -43,43 +43,84 @@
       </el-form>
     </el-header>
     <el-main v-loading="loading" style="padding: 0; margin: 0">
-      <ul
-        ref="scrollRef"
-        class="max-h-full flex flex-row flex-wrap gap-5 justify-around items-center box-border overflow-x-hidden overflow-y-auto"
-      >
-        <li
-          v-for="(item, index) of books"
-          :key="index"
-          class="w-56 h-[21rem] shadow-lg overflow-hidden border border-pink-200 rounded-lg relative"
-        >
-          <span class="absolute text-blue-700 inline-block top-2 left-3">{{
-            index + 1
-          }}</span>
-          <img
-            class="object-cover"
-            :src="item.coverPhoto"
-            alt=""
-            sizes=""
-            srcset=""
-          />
-        </li>
-      </ul>
+      <el-table :data="books" stripe style="width: 100%">
+        <el-table-column
+          show-overflow-tooltip
+          align="center"
+          width="300"
+          prop="name"
+          label="名字"
+        />
+        <el-table-column align="center" prop="categories" label="分类" />
+        <el-table-column align="center" prop="coverPhoto" label="封面">
+          <template #default="scope">
+            <el-image
+              style="width: 100px; height: 100px"
+              :src="scope.row.coverPhoto"
+              fit="contain"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="isHave" label="是否拥有">
+          <template #default="scope">
+            <el-tag :type="scope.row.isHave ? 'success' : 'danger'">
+              {{ scope.row.isHave ? "拥有" : "未拥有" }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="status" label="状态" />
+        <el-table-column align="center" label="操作">
+          <template #default="scope">
+            <!-- <el-button
+              type="primary"
+              @click="$router.push(`/book/detail/${scope.row._id}`)"
+            >
+              查看
+            </el-button> -->
+            <el-button type="primary" @click="edit(scope.row)">
+              编辑
+            </el-button>
+            <el-popconfirm
+              icon-color="#626AEF"
+              title="确定要删除吗?"
+              @confirm="remove(scope.row)"
+            >
+              <template #reference>
+                <el-button type="danger">删除</el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-main>
+    <AddUpdate
+      ref="addUpdateRef"
+      v-model="addDialog"
+      :tag-options="tagOptions"
+      :editType="editType"
+      @close="closeDIalog"
+    />
   </el-container>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from "vue";
-import type { Book, GET_BOOK_LIST_QUERY } from "@/api/book/types/index";
+import { ref, onMounted, computed } from "vue";
+import type {
+  CREATE_BOOK_RES,
+  GET_BOOK_LIST_QUERY,
+} from "@/api/book/types/index";
 import { reactive } from "vue";
 import {
   getBooks as getBooksAPI,
   getTags as getTagsAPI,
-  createBook as createBookAPI,
+  deleteBook as deleteBookAPI,
 } from "@/api/book/index";
+import AddUpdate from "./components/add-update.vue";
+import { ElMessage } from "element-plus";
 
 defineOptions({
   name: "AnimalRanking",
 });
+
 const scrollRef = ref<HTMLElement>(null);
 const loading = ref<Boolean>(false);
 
@@ -102,7 +143,8 @@ onMounted(() => {
     });
 });
 
-const books = ref<Book[]>([]);
+// 查询书籍
+const books = ref<CREATE_BOOK_RES[]>([]);
 function getBooks() {
   getBooksAPI(searchValue)
     .then(res => {
@@ -115,17 +157,38 @@ function getBooks() {
 getBooks();
 
 // 新增
-const bookInfo: Book = reactive({
-  priority: 0,
-  categories: [], // 分类，用逗号分隔
-  name: "", // 书名
-  introduction: "", // 简介
-  coverPhoto: "", // 封面
-  isHave: false, // 是否已经拥有
-  status: "无",
-});
-
+const addUpdateRef = ref<InstanceType<typeof AddUpdate> | null>(null);
+const editType = ref<"add" | "edit">("add");
+const addDialog = ref<Boolean>(false);
 function add() {
-  createBookAPI(bookInfo);
+  addUpdateRef.value?.reset();
+  editType.value = "add";
+  addDialog.value = true;
+}
+
+// 编辑
+function edit(row: CREATE_BOOK_RES) {
+  addUpdateRef.value?.reset(row);
+  editType.value = "edit";
+  addDialog.value = true;
+}
+// 删除
+function remove(row: CREATE_BOOK_RES) {
+  deleteBookAPI(row._id)
+    .then(() => {
+      ElMessage.success("删除成功");
+    })
+    .catch(error => {
+      ElMessage.error(error.message);
+    })
+    .finally(() => {
+      getBooks();
+    });
+}
+
+// 关闭弹窗
+function closeDIalog() {
+  addDialog.value = false;
+  getBooks();
 }
 </script>

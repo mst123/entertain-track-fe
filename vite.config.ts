@@ -29,6 +29,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
           target: "https://api.myanimelist.net/v2",
           changeOrigin: true,
         },
+        // 好像是预览文件时用的
         "/api/v1/files": {
           target: "http://localhost:3000/",
           changeOrigin: true,

@@ -14,7 +14,7 @@ export default {
       },
     },
     {
-      path: "/book/detail/:animeID",
+      path: "/book/detail/:bookID",
       name: "book-detail",
       component: () => import("@/views/book/detail.vue"),
       meta: {

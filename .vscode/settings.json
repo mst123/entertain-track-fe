@@ -36,5 +36,12 @@
   "i18n-ally.displayLanguage": "zh-CN",
   "i18n-ally.enabledFrameworks": ["vue"],
   "iconify.excludes": ["el"],
-  "cSpell.words": ["Auths", "clannad", "longpress", "pureadmin"]
+  "cSpell.words": [
+    "Auths",
+    "clannad",
+    "longpress",
+    "longurl",
+    "popconfirm",
+    "pureadmin"
+  ]
 }

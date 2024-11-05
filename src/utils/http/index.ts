@@ -114,7 +114,7 @@ class PureHttp {
       (error: PureHttpError) => {
         const { config, response } = error;
         // token过期
-        if (response.status === 401 && !whiteList.includes(config.url)) {
+        if (response?.status === 401 && !whiteList.includes(config.url)) {
           if ((response as PureHttpResponse).data.message === "token已过期") {
             // TODO
             return "refreshToken已经过期了";

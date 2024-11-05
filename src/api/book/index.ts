@@ -19,8 +19,11 @@ export function updateBook(
   data: Book.UPDATE_BOOK_QUERY,
   config?: AxiosRequestConfig
 ) {
+  console.log(data);
+
+  const id = data._id;
   return http.put<Book.UPDATE_BOOK_QUERY, CommonRes<Book.UPDATE_BOOK_RES>>(
-    "/api/books",
+    "/api/books/" + id,
     data,
     config
   );
@@ -31,19 +34,19 @@ export function getBooks(
   data: Book.GET_BOOK_LIST_QUERY,
   config?: AxiosRequestConfig
 ) {
-  return http.get<
+  return http.post<
     Book.GET_BOOK_LIST_QUERY,
     CommonRes<Book.GET_BOOK_LIST_RES[]>
-  >("/api/books", data, config);
+  >("/api/books/query", data, config);
 }
 
 // 删除
-export function deleteNewBook(
+export function deleteBook(
   data: Book.DELETE_BOOK_QUERY,
   config?: AxiosRequestConfig
 ) {
   return http.delete<Book.DELETE_BOOK_QUERY, CommonRes<Book.DELETE_BOOK_RES>>(
-    "/api/books",
+    "/api/books/" + data,
     data,
     config
   );

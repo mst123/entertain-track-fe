@@ -5,12 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "type": "chrome",
       "request": "launch",
-      "name": "启动程序",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/src/utils/http/index.ts",
-      "outFiles": ["${workspaceFolder}/**/*.js"]
+      "name": "调试 vite 项目",
+      "runtimeExecutable": "canary",
+      "runtimeArgs": [
+        "--auto-open-devtools-for-tabs"
+      ],
+      // 用户数据目录有个特点，就是只能被一个 Chrome 实例所访问，
+      // 如果你之前启动了 Chrome 用了这个默认的 user data dir，那就不能再启动一个 Chrome 实例用它了
+      "userDataDir": false,
+      "url": "http://localhost:8848",
+      "webRoot": "${workspaceFolder}"
     }
   ]
 }
