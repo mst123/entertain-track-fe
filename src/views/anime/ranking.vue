@@ -36,6 +36,7 @@
           v-for="(item, index) of animeList"
           :key="index"
           class="w-56 h-[21rem] shadow-lg border border-pink-200 rounded-lg relative"
+          @click="$router.push('/anime/detail/' + item.node.id)"
         >
           <span class="absolute text-blue-700 inline-block top-2 left-3">{{
             index + 1
@@ -76,7 +77,7 @@ const searchValue: SearchValue = reactive({
   limit: 30,
   offset: 0,
   fields:
-    "id,title,main_picture,rank,popularity,num_list_users,num_scoring_users,mean,rating",
+    "id,title,main_picture,rank,source,popularity,num_list_users,num_scoring_users,mean,rating",
 });
 
 const animeList = ref<Array<AnimeNode>>([]);

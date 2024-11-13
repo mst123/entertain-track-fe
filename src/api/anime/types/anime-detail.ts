@@ -124,7 +124,7 @@ interface Studio {
 
 // 关联动漫
 export interface RelatedAnime {
-  AnimeNode: BaseNode;
+  node: BaseNode;
   relation_type: string; // 关联类型
   relation_type_formatted: string; // 格式化的关联类型
 }
