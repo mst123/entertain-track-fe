@@ -7,7 +7,7 @@ export function createBook(
   data: Book.CREATE_BOOK_QUERY,
   config?: AxiosRequestConfig
 ) {
-  return http.post<Book.CREATE_BOOK_QUERY, CommonRes<Book.CREATE_BOOK_RES>>(
+  return http.post<Book.CREATE_BOOK_QUERY, Book.CREATE_BOOK_RES>(
     "/api/books",
     data,
     config
@@ -22,7 +22,7 @@ export function updateBook(
   console.log(data);
 
   const id = data._id;
-  return http.put<Book.UPDATE_BOOK_QUERY, CommonRes<Book.UPDATE_BOOK_RES>>(
+  return http.put<Book.UPDATE_BOOK_QUERY, Book.UPDATE_BOOK_RES>(
     "/api/books/" + id,
     data,
     config
@@ -34,10 +34,11 @@ export function getBooks(
   data: Book.GET_BOOK_LIST_QUERY,
   config?: AxiosRequestConfig
 ) {
-  return http.post<
-    Book.GET_BOOK_LIST_QUERY,
-    CommonRes<Book.GET_BOOK_LIST_RES[]>
-  >("/api/books/query", data, config);
+  return http.post<Book.GET_BOOK_LIST_QUERY, Book.GET_BOOK_LIST_RES[]>(
+    "/api/books/query",
+    data,
+    config
+  );
 }
 
 // 删除
@@ -45,7 +46,7 @@ export function deleteBook(
   data: Book.DELETE_BOOK_QUERY,
   config?: AxiosRequestConfig
 ) {
-  return http.delete<Book.DELETE_BOOK_QUERY, CommonRes<Book.DELETE_BOOK_RES>>(
+  return http.delete<Book.DELETE_BOOK_QUERY, Book.DELETE_BOOK_RES>(
     "/api/books/" + data,
     data,
     config
@@ -54,5 +55,5 @@ export function deleteBook(
 
 // 获取全部标签
 export function getTags(config?: AxiosRequestConfig) {
-  return http.get<{}, CommonRes<Book.GET_TAGS_RES>>("/api/books/tags", config);
+  return http.get<{}, Book.GET_TAGS_RES>("/api/books/tags", config);
 }

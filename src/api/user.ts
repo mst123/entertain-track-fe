@@ -9,12 +9,11 @@ export type UserBase = {
   userPermission: string;
   passwordChangedAt: string;
 };
+
 export type LoginResult = {
   user: UserBase;
   refresh: RefreshTokenResult;
 };
-
-export type UserResult = CommonRes<LoginResult>;
 
 export type RefreshTokenResult = {
   refreshToken: string;
@@ -24,7 +23,7 @@ export type RefreshTokenResult = {
 
 /** 登录 */
 export const getLogin = (data?: object) => {
-  return http.request<UserResult>("post", "/api/login", { data });
+  return http.request<LoginResult>("post", "/api/login", { data });
 };
 
 /** 刷新token */

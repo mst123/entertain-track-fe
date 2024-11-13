@@ -184,30 +184,36 @@ class PureHttp {
     url: string,
     data: T,
     config?: AxiosRequestConfig
-  ): Promise<P> {
-    return this.request<P>("post", url, { data, ...(config || {}) });
+  ): Promise<CommonRes<P>> {
+    return this.request<CommonRes<P>>("post", url, { data, ...(config || {}) });
   }
   public put<T, P>(
     url: string,
     data: T,
     config?: AxiosRequestConfig
-  ): Promise<P> {
-    return this.request<P>("put", url, { data, ...(config || {}) });
+  ): Promise<CommonRes<P>> {
+    return this.request<CommonRes<P>>("put", url, { data, ...(config || {}) });
   }
   public get<T, P>(
     url: string,
     params: T,
     config?: AxiosRequestConfig
-  ): Promise<P> {
-    return this.request<P>("get", url, { params, ...(config || {}) });
+  ): Promise<CommonRes<P>> {
+    return this.request<CommonRes<P>>("get", url, {
+      params,
+      ...(config || {}),
+    });
   }
 
   public delete<T, P>(
     url: string,
     params: T,
     config?: AxiosRequestConfig
-  ): Promise<P> {
-    return this.request<P>("delete", url, { params, ...(config || {}) });
+  ): Promise<CommonRes<P>> {
+    return this.request<CommonRes<P>>("delete", url, {
+      params,
+      ...(config || {}),
+    });
   }
 }
 
