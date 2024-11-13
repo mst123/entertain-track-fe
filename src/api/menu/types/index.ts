@@ -38,23 +38,29 @@ export interface CREATE_MENU_RES extends Menu {
 
 // 获取
 export interface GET_MENU_LIST_QUERY {
+  id?: string;
   name?: string;
   // 素材名称
   materialList?: Array<String>;
 }
 
-export type GET_MENU_LIST_RES = Menu;
+export interface GET_MENU_LIST_RES extends Menu {
+  _id: string;
+}
 
 // 更新
 export interface UPDATE_MENU_QUERY extends Menu {
-  _id: string; // 书的id
+  _id: string;
 }
 
 export type UPDATE_MENU_RES = UPDATE_MENU_QUERY;
 
 // 删除
-export interface DELETE_MENU_QUERY {
-  _id: string; // 书的id
+export interface DELETE_MENU_RES {
+  _id: string; // 菜的id
 }
 
-export type DELETE_MENU_RES = Menu;
+export type DELETE_MENU_QUERY = string;
+
+// 标签 Materials
+export type GET_MATERIALS_RES = string[];
