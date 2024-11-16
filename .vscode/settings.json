@@ -49,6 +49,7 @@
     "longpress",
     "longurl",
     "popconfirm",
-    "pureadmin"
+    "pureadmin",
+    "steamid"
   ]
 }
