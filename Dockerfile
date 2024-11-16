@@ -1,20 +1,26 @@
-FROM node:18-alpine as build-stage
-
+# 构建阶段
+FROM node:20-alpine as build-stage
 WORKDIR /app
-
+RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
 RUN npm config set registry https://registry.npmmirror.com
 
-COPY package.json ./
-
-RUN npm install
+COPY .npmrc package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 COPY . .
+RUN pnpm build
 
-RUN npm run build
+# 生产阶段
+FROM nginx:alpine as production-stage
 
-FROM nginx:stable-alpine as production-stage
-
+# 拷贝构建结果
 COPY --from=build-stage /app/dist /usr/share/nginx/html
+# 拷贝 nginx 配置文件
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# 验证 nginx 配置是否正确
+RUN nginx -t
 
 EXPOSE 80
 

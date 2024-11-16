@@ -1,0 +1,10 @@
+services:
+  my-app:
+    image: entertain-track-fe-image # 使用你构建的镜像名称
+    container_name: entertain-track-fe-container # 指定容器名称
+    build:
+      context: . # Dockerfile 所在路径
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: always # 设置自动重启策略（可选）
