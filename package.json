@@ -19,7 +19,8 @@
     "lint:prettier": "prettier --write  \"src/**/*.{js,ts,json,tsx,css,scss,vue,html,md}\"",
     "lint:stylelint": "stylelint --cache --fix \"**/*.{html,vue,css,scss}\" --cache-location node_modules/.cache/stylelint/",
     "lint": "pnpm lint:eslint && pnpm lint:prettier && pnpm lint:stylelint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "docker:build": "docker buildx build --push --platform linux/amd64 -f ./Dockerfile -t registry.cn-beijing.aliyuncs.com/mashitu/et-fe:latest ."
   },
   "license": "MIT",
   "dependencies": {
