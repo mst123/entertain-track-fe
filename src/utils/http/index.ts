@@ -122,7 +122,6 @@ class PureHttp {
           // TODO any
           return new Promise<any>(resolve => {
             const data = getToken();
-            debugger;
             // 已经存在请求refreshToken的请求了
             if (!PureHttp.isRefreshing) {
               PureHttp.isRefreshing = true;

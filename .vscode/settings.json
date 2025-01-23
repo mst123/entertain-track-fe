@@ -50,6 +50,7 @@
     "longurl",
     "popconfirm",
     "pureadmin",
-    "steamid"
+    "steamid",
+    "wechat"
   ]
 }

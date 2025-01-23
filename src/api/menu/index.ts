@@ -48,12 +48,12 @@ export function getMenuById(id: string, config?: AxiosRequestConfig) {
 
 // 删除
 export function deleteMenu(
-  data: Menu.DELETE_MENU_QUERY,
+  id: Menu.DELETE_MENU_QUERY,
   config?: AxiosRequestConfig
 ) {
   return http.delete<Menu.DELETE_MENU_QUERY, Menu.DELETE_MENU_RES>(
-    "/api/menus/" + data,
-    data,
+    "/api/menus/" + id,
+    null,
     config
   );
 }
