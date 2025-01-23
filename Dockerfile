@@ -18,7 +18,7 @@ FROM nginx:alpine AS production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 # 拷贝 nginx 配置文件 代理总是失败，移到宿主机代理
-# COPY nginx.conf /etc/nginx/conf.d
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
