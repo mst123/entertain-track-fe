@@ -276,11 +276,14 @@ const totalStats = ref({
  * @param num 需要格式化的数字
  * @returns 格式化后的字符串
  */
-const formatNumber = (num: number) => {
+const formatNumber = (num: number | string) => {
   // toLocaleString() 方法返回一个字符串，内容是该数字在特定语言环境下的表示形式。
   // 第一个参数是 locale，表示语言环境，zh-CN 代表简体中文。
   // 第二个参数是 options，表示格式化选项，可以设置小数点位数、分隔符等。
-  return num.toLocaleString("zh-CN", {
+  // minimumFractionDigits 和 maximumFractionDigits 选项分别表示小数点后最小和最大位数。
+  // useGrouping 选项表示是否使用千位分隔符。
+
+  return Number(num).toLocaleString("zh-CN", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
     useGrouping: true,
