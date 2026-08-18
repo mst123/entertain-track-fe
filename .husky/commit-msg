@@ -2,7 +2,14 @@
 
 # shellcheck source=./_/husky.sh
 . "$(dirname "$0")/_/husky.sh"
+. "$(dirname "$0")/common.sh"
 
-PATH="/usr/local/bin:$PATH"
-
-npx --no-install commitlint --edit "$1"
+# GUI 提交时 PATH 可能没有 node/npx，先走 common.sh 的 fnm 引导
+if command_exists pnpm; then
+  pnpm exec commitlint --edit "$1"
+elif command_exists npx; then
+  npx --no-install commitlint --edit "$1"
+else
+  echo "husky: pnpm/npx not found. Please ensure Node.js (fnm) is available in PATH."
+  exit 127
+fi
