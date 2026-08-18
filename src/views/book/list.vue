@@ -69,14 +69,23 @@
           </template>
         </el-table-column>
         <el-table-column align="center" prop="status" label="状态" />
-        <el-table-column align="center" label="操作">
+        <el-table-column align="center" label="阅读进度" width="120">
           <template #default="scope">
-            <!-- <el-button
-              type="primary"
+            <span v-if="scope.row.epubUrl">
+              {{ Math.round(scope.row.readingProgress?.percentage || 0) }}%
+            </span>
+            <span v-else class="text-gray-400">-</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作" width="280">
+          <template #default="scope">
+            <el-button
+              v-if="scope.row.epubUrl"
+              type="success"
               @click="$router.push(`/book/detail/${scope.row._id}`)"
             >
-              查看
-            </el-button> -->
+              阅读
+            </el-button>
             <el-button type="primary" @click="edit(scope.row)">
               编辑
             </el-button>

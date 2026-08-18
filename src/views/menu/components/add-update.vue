@@ -1,8 +1,10 @@
 <template>
   <el-dialog
+    v-model="visible"
     :title="editType === 'add' ? '新增菜谱' : '编辑菜谱'"
     width="1400"
     align-center
+    destroy-on-close
   >
     <el-form
       ref="ruleFormRef"
@@ -24,31 +26,31 @@
         </el-form-item>
 
         <el-form-item prop="ingredients" label="配料">
-          <div
-            v-for="(ingredient, index) in menuInfo.ingredients"
-            :key="index"
-            class="mb-2"
-          >
-            <div class="flex items-center gap-2">
+          <div class="flex w-full flex-col gap-2">
+            <div
+              v-for="(ingredient, index) in menuInfo.ingredients"
+              :key="index"
+              class="flex w-full items-center gap-2"
+            >
               <el-input
                 v-model="ingredient.name"
-                placeholder="配料名称"
-                style="width: 200px"
+                placeholder="如：羊蝎子"
+                class="flex-1"
               />
               <el-input
                 v-model="ingredient.amount"
-                placeholder="用量"
-                style="width: 150px"
+                placeholder="如：2斤 / 适量"
+                style="width: 160px"
               />
               <el-button type="danger" @click="removeIngredient(index)">
                 删除
               </el-button>
             </div>
-          </div>
-          <div class="mb-2 w-full">
-            <el-button type="primary" @click="addIngredient">
-              添加配料
-            </el-button>
+            <div>
+              <el-button type="primary" @click="addIngredient">
+                添加配料
+              </el-button>
+            </div>
           </div>
         </el-form-item>
 
@@ -57,54 +59,92 @@
             v-model="menuInfo.preparation"
             type="textarea"
             rows="3"
-            placeholder="请输入准备工作"
+            placeholder="如：羊蝎子提前泡出血水、焯水备用"
           />
         </el-form-item>
+
         <el-form-item prop="steps" label="制作步骤">
-          <div class="flex flex-wrap gap-4">
+          <div class="flex w-full flex-col gap-4">
             <div
               v-for="(step, index) in menuInfo.steps"
               :key="index"
-              class="w-[calc(50%-1rem)] p-4 border rounded-lg bg-gray-50"
+              class="w-full rounded-lg border bg-gray-50 p-4"
             >
-              <div class="flex items-center gap-2 mb-3">
+              <div class="mb-3 flex items-center justify-between gap-2">
                 <span class="text-lg font-bold text-gray-700">
                   步骤 {{ index + 1 }}
                 </span>
-                <el-button type="danger" @click="removeStep(index)">
-                  删除
-                </el-button>
+                <div class="flex items-center gap-2">
+                  <el-button
+                    :disabled="index === 0"
+                    @click="moveStep(index, -1)"
+                  >
+                    上移
+                  </el-button>
+                  <el-button
+                    :disabled="index === menuInfo.steps.length - 1"
+                    @click="moveStep(index, 1)"
+                  >
+                    下移
+                  </el-button>
+                  <el-button type="danger" @click="removeStep(index)">
+                    删除
+                  </el-button>
+                </div>
               </div>
-              <div class="flex items-center gap-2 mb-3">
+
+              <div class="mb-3 flex items-center gap-2">
+                <span class="shrink-0 text-sm text-gray-500">预计时长</span>
                 <el-input
                   v-model="step.duration"
                   type="number"
-                  placeholder="时长(分钟)"
-                  style="width: 200px"
+                  min="0"
+                  placeholder="可选"
+                  style="width: 180px"
                 >
                   <template #append>分钟</template>
                 </el-input>
               </div>
-              <div class="flex items-center gap-2 mb-3">
+
+              <div class="mb-3">
+                <div class="mb-1 text-sm text-gray-500">步骤说明</div>
                 <el-input
                   v-model="step.description"
                   type="textarea"
-                  placeholder="步骤描述"
+                  :rows="2"
+                  placeholder="如：焯水去腥，热水洗净捞出"
                 />
               </div>
-              <el-select
-                v-model="step.actions"
-                multiple
-                filterable
-                allow-create
-                default-first-option
-                placeholder="请添加具体操作步骤"
-                class="w-full"
-              />
+
+              <div>
+                <div class="mb-1 text-sm text-gray-500">
+                  操作关键词（可选，回车添加）
+                </div>
+                <div
+                  class="flex min-h-[32px] flex-wrap items-center gap-2 rounded border border-[var(--el-border-color)] bg-white px-2 py-1.5"
+                >
+                  <el-tag
+                    v-for="(action, actionIndex) in step.actions"
+                    :key="`${index}-${action}-${actionIndex}`"
+                    closable
+                    type="info"
+                    @close="removeAction(index, actionIndex)"
+                  >
+                    {{ action }}
+                  </el-tag>
+                  <input
+                    v-model="actionDrafts[index]"
+                    class="action-tag-input min-w-[140px] flex-1 border-0 bg-transparent text-sm outline-none"
+                    placeholder="如：焯水、洗净"
+                    @keydown.enter.prevent="addAction(index)"
+                    @keydown.backspace="onActionBackspace(index, $event)"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="mt-4">
-            <el-button type="primary" @click="addStep">添加步骤</el-button>
+            <div>
+              <el-button type="primary" @click="addStep">添加步骤</el-button>
+            </div>
           </div>
         </el-form-item>
 
@@ -133,6 +173,7 @@
             list-type="picture-card"
             :on-success="fileSuccess"
             :on-error="fileError"
+            :on-remove="fileRemove"
             multiple
           >
             <el-icon><Plus /></el-icon>
@@ -142,15 +183,18 @@
 
       <el-form-item>
         <el-button type="primary" @click="save">保存</el-button>
-        <el-button @click="$emit('close')">取消</el-button>
+        <el-button @click="visible = false">取消</el-button>
       </el-form-item>
     </el-form>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
-import type { UPDATE_MENU_QUERY } from "@/api/menu/types/index";
+import { ref, reactive, nextTick } from "vue";
+import type {
+  CREATE_MENU_QUERY,
+  UPDATE_MENU_QUERY,
+} from "@/api/menu/types/index";
 import { Plus } from "@element-plus/icons-vue";
 import {
   createMenu as createMenuAPI,
@@ -168,10 +212,13 @@ const props = defineProps<{
   editType: "add" | "edit";
 }>();
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits<{
+  success: [];
+}>();
 
-// 表单数据
-const menuInfo = reactive<UPDATE_MENU_QUERY>({
+const visible = defineModel<boolean>({ default: false });
+
+const emptyMenu = (): UPDATE_MENU_QUERY => ({
   _id: "",
   name: "",
   ingredients: [],
@@ -184,42 +231,70 @@ const menuInfo = reactive<UPDATE_MENU_QUERY>({
   improvements: "",
 });
 
-// 重置表单
+const menuInfo = reactive<UPDATE_MENU_QUERY>(emptyMenu());
+const actionDrafts = ref<string[]>([]);
+
 function reset(params?: UPDATE_MENU_QUERY) {
-  if (params) {
-    Object.assign(menuInfo, params);
-    fileList.value = params.image.map((url, index) => ({
-      url,
-      name: `图片${index + 1}`,
-    }));
-  } else {
-    Object.assign(menuInfo, {
-      _id: "",
-      name: "",
-      ingredients: [],
-      servings: 1,
-      preparation: "",
-      notes: "",
-      steps: [],
-      image: [],
-      reviews: [],
-      improvements: "",
-    });
-    fileList.value = [];
-  }
+  const data = params
+    ? (JSON.parse(JSON.stringify(params)) as UPDATE_MENU_QUERY)
+    : emptyMenu();
+
+  data.steps = (data.steps || []).map(step => ({
+    ...step,
+    actions: step.actions || [],
+    duration: step.duration ?? 0,
+  }));
+  data.ingredients = data.ingredients || [];
+
+  Object.assign(menuInfo, emptyMenu(), data);
+  actionDrafts.value = menuInfo.steps.map(() => "");
+  fileList.value = (data.image || []).map((url, index) => ({
+    url,
+    name: `图片${index + 1}`,
+  }));
+
+  nextTick(() => {
+    ruleFormRef.value?.clearValidate();
+  });
 }
 defineExpose({ reset });
 
-// 表单校验规则
 const ruleFormRef = ref<FormInstance>();
 const rules: FormRules = {
   name: [{ required: true, message: "请输入菜名", trigger: "blur" }],
-  ingredients: [{ required: true, message: "请添加配料", trigger: "change" }],
+  ingredients: [
+    {
+      required: true,
+      validator: (_rule, _value, callback) => {
+        const valid = menuInfo.ingredients.some(
+          item => item.name.trim() && item.amount.trim()
+        );
+        if (!valid) {
+          callback(new Error("请至少添加一条完整配料"));
+          return;
+        }
+        callback();
+      },
+      trigger: "change",
+    },
+  ],
   servings: [{ required: true, message: "请输入份量", trigger: "blur" }],
-  steps: [{ required: true, message: "请添加制作步骤", trigger: "change" }],
+  steps: [
+    {
+      required: true,
+      validator: (_rule, _value, callback) => {
+        const valid = menuInfo.steps.some(step => step.description.trim());
+        if (!valid) {
+          callback(new Error("请至少添加一条有说明的制作步骤"));
+          return;
+        }
+        callback();
+      },
+      trigger: "change",
+    },
+  ],
 };
 
-// 文件上传相关
 const fileList = ref<UploadUserFile[]>([]);
 const fileSuccess: UploadProps["onSuccess"] = file => {
   ElMessage.success("图片上传成功");
@@ -228,21 +303,59 @@ const fileSuccess: UploadProps["onSuccess"] = file => {
 const fileError: UploadProps["onError"] = () => {
   ElMessage.error("图片上传失败");
 };
+const fileRemove: UploadProps["onRemove"] = file => {
+  const url = file.url || file.response?.longurl;
+  if (!url) return;
+  menuInfo.image = menuInfo.image.filter(item => item !== url);
+};
 
-// 步骤管理
 function addStep() {
   menuInfo.steps.push({
-    duration: 1,
+    duration: 0,
     description: "",
     actions: [],
   });
+  actionDrafts.value.push("");
 }
 
 function removeStep(index: number) {
   menuInfo.steps.splice(index, 1);
+  actionDrafts.value.splice(index, 1);
 }
 
-// 配料管理
+function moveStep(index: number, offset: number) {
+  const target = index + offset;
+  if (target < 0 || target >= menuInfo.steps.length) return;
+  const [step] = menuInfo.steps.splice(index, 1);
+  menuInfo.steps.splice(target, 0, step);
+  const [draft] = actionDrafts.value.splice(index, 1);
+  actionDrafts.value.splice(target, 0, draft);
+}
+
+function addAction(stepIndex: number) {
+  const value = (actionDrafts.value[stepIndex] || "").trim();
+  if (!value) return;
+  const actions = menuInfo.steps[stepIndex].actions || [];
+  if (!actions.includes(value)) {
+    actions.push(value);
+    menuInfo.steps[stepIndex].actions = actions;
+  }
+  actionDrafts.value[stepIndex] = "";
+}
+
+function removeAction(stepIndex: number, actionIndex: number) {
+  menuInfo.steps[stepIndex].actions.splice(actionIndex, 1);
+}
+
+function onActionBackspace(stepIndex: number, event: KeyboardEvent) {
+  const draft = actionDrafts.value[stepIndex] || "";
+  if (draft) return;
+  const actions = menuInfo.steps[stepIndex].actions;
+  if (!actions?.length) return;
+  event.preventDefault();
+  actions.pop();
+}
+
 function addIngredient() {
   menuInfo.ingredients.push({
     name: "",
@@ -254,24 +367,48 @@ function removeIngredient(index: number) {
   menuInfo.ingredients.splice(index, 1);
 }
 
-// 保存
+function buildPayload(): CREATE_MENU_QUERY {
+  return {
+    name: menuInfo.name.trim(),
+    ingredients: menuInfo.ingredients
+      .map(({ name, amount }) => ({
+        name: name.trim(),
+        amount: amount.trim(),
+      }))
+      .filter(item => item.name && item.amount),
+    servings: Number(menuInfo.servings) || 1,
+    preparation: menuInfo.preparation.trim(),
+    notes: menuInfo.notes.trim(),
+    steps: menuInfo.steps
+      .map(({ description, duration, actions }) => ({
+        description: description.trim(),
+        duration: Number(duration) || 0,
+        actions: (actions || []).map(item => item.trim()).filter(Boolean),
+      }))
+      .filter(step => step.description),
+    image: menuInfo.image,
+    reviews: menuInfo.reviews || [],
+    improvements: menuInfo.improvements.trim(),
+  };
+}
+
 function save() {
   ruleFormRef.value?.validate(valid => {
-    if (valid) {
-      if (props.editType === "add") {
-        create();
-      } else {
-        update();
-      }
+    if (!valid) return;
+    if (props.editType === "add") {
+      create();
+    } else {
+      update();
     }
   });
 }
 
 function create() {
-  createMenuAPI(menuInfo)
+  createMenuAPI(buildPayload())
     .then(() => {
       ElMessage.success("新增成功");
-      emit("close");
+      visible.value = false;
+      emit("success");
     })
     .catch(() => {
       ElMessage.error("新增失败");
@@ -279,10 +416,18 @@ function create() {
 }
 
 function update() {
-  updateMenuAPI(menuInfo)
+  if (!menuInfo._id) {
+    ElMessage.error("缺少菜谱 ID，无法更新");
+    return;
+  }
+  updateMenuAPI({
+    ...buildPayload(),
+    _id: menuInfo._id,
+  })
     .then(() => {
       ElMessage.success("更新成功");
-      emit("close");
+      visible.value = false;
+      emit("success");
     })
     .catch(() => {
       ElMessage.error("更新失败");
@@ -291,12 +436,8 @@ function update() {
 </script>
 
 <style scoped>
-.el-select {
-  --el-select-input-focus-border-color: var(--el-color-primary);
-}
-
-:deep(.el-select .el-input__wrapper) {
-  padding: 8px;
+.action-tag-input::placeholder {
+  color: var(--el-text-color-placeholder);
 }
 
 :deep(.el-input__wrapper) {

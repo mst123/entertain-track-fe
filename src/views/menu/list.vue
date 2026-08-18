@@ -93,7 +93,7 @@
       ref="addUpdateRef"
       v-model="addDialog"
       :edit-type="editType"
-      @close="closeDialog"
+      @success="getMenus"
     />
   </el-container>
 </template>
@@ -162,14 +162,14 @@ const editType = ref<"add" | "edit">("add");
 const addDialog = ref<Boolean>(false);
 
 function add() {
-  addUpdateRef.value?.reset();
   editType.value = "add";
+  addUpdateRef.value?.reset();
   addDialog.value = true;
 }
 
 function edit(row: GET_MENU_LIST_RES) {
-  addUpdateRef.value?.reset(row);
   editType.value = "edit";
+  addUpdateRef.value?.reset(row);
   addDialog.value = true;
 }
 
@@ -182,10 +182,5 @@ function remove(row: GET_MENU_LIST_RES) {
     .catch(error => {
       ElMessage.error(error.message);
     });
-}
-
-function closeDialog() {
-  addDialog.value = false;
-  getMenus();
 }
 </script>

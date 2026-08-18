@@ -1,3 +1,9 @@
+export interface ReadingProgress {
+  cfi?: string;
+  percentage?: number;
+  updatedAt?: string;
+}
+
 export interface Book {
   priority?: number; // 想看才会起效的优先级 默认 0
   categories?: String[]; // 分类，用逗号分隔
@@ -6,6 +12,9 @@ export interface Book {
   coverPhoto: string; // 封面
   isHave?: boolean; // 是否已经拥有
   status?: "想看" | "正在看" | "看过" | "无"; // 状态
+  epubUrl?: string; // EPUB 文件地址
+  epubFileName?: string; // EPUB 原始文件名
+  readingProgress?: ReadingProgress; // 阅读进度
 }
 // 创建
 export type CREATE_BOOK_QUERY = Book;
@@ -24,6 +33,10 @@ export interface GET_BOOK_LIST_QUERY {
 export interface GET_BOOK_LIST_RES extends Book {
   _id: string; // 书的id
 }
+
+// 详情
+export type GET_BOOK_DETAIL_RES = CREATE_BOOK_RES;
+
 // 更新
 export interface UPDATE_BOOK_QUERY extends Book {
   _id: string; // 书的id
@@ -38,3 +51,11 @@ export type DELETE_BOOK_RES = Book;
 
 // 标签
 export type GET_TAGS_RES = string[];
+
+// 阅读进度
+export interface UPDATE_READING_PROGRESS_QUERY {
+  cfi?: string;
+  percentage?: number;
+}
+
+export type UPDATE_READING_PROGRESS_RES = CREATE_BOOK_RES;

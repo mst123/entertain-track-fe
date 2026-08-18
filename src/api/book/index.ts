@@ -57,3 +57,20 @@ export function deleteBook(
 export function getTags(config?: AxiosRequestConfig) {
   return http.get<{}, Book.GET_TAGS_RES>("/api/books/tags", config);
 }
+
+// 获取详情
+export function getBookById(id: string, config?: AxiosRequestConfig) {
+  return http.get<{}, Book.GET_BOOK_DETAIL_RES>(`/api/books/${id}`, {}, config);
+}
+
+// 更新阅读进度
+export function updateReadingProgress(
+  id: string,
+  data: Book.UPDATE_READING_PROGRESS_QUERY,
+  config?: AxiosRequestConfig
+) {
+  return http.put<
+    Book.UPDATE_READING_PROGRESS_QUERY,
+    Book.UPDATE_READING_PROGRESS_RES
+  >(`/api/books/${id}/progress`, data, config);
+}

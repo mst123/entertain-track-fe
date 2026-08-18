@@ -18,7 +18,7 @@ export default {
       name: "book-detail",
       component: () => import("@/views/book/detail.vue"),
       meta: {
-        title: "书籍详情",
+        title: "阅读",
         showLink: false,
       },
     },
