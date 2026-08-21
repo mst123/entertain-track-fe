@@ -32,7 +32,14 @@
       @wheel.prevent="onWheel"
     >
       <div v-if="errorMsg" class="p-6 text-red-500">{{ errorMsg }}</div>
-      <div ref="viewerRef" class="w-full h-full outline-none" tabindex="0" />
+      <!-- 水平边距加在外层，避免改 body padding 破坏分栏翻页 -->
+      <div
+        ref="viewerShellRef"
+        class="viewer-shell w-full h-full box-border"
+        :style="viewerShellStyle"
+      >
+        <div ref="viewerRef" class="w-full h-full outline-none" tabindex="0" />
+      </div>
     </div>
 
     <el-drawer
@@ -65,6 +72,31 @@
     >
       <div class="style-panel flex flex-col gap-6 px-1">
         <div>
+          <div class="mb-2 text-sm font-medium">字体</div>
+          <el-select
+            v-model="readerStyle.fontFamily"
+            class="w-full"
+            @change="onStyleChange"
+          >
+            <el-option
+              v-for="item in FONT_OPTIONS"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+              <span :style="{ fontFamily: item.value || 'inherit' }">
+                {{ item.label }}
+              </span>
+            </el-option>
+          </el-select>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="text-sm font-medium">加粗正文</div>
+          <el-switch v-model="readerStyle.bold" @change="onStyleChange" />
+        </div>
+
+        <div>
           <div class="mb-2 text-sm font-medium">
             字号 {{ readerStyle.fontSize }}%
           </div>
@@ -74,7 +106,7 @@
             :max="200"
             :step="5"
             show-stops
-            @change="applyReaderStyle"
+            @change="onStyleChange"
           />
         </div>
 
@@ -87,7 +119,7 @@
             :min="1.2"
             :max="2.4"
             :step="0.1"
-            @change="applyReaderStyle"
+            @change="onStyleChange"
           />
         </div>
 
@@ -100,7 +132,7 @@
             :min="0"
             :max="20"
             :step="2"
-            @change="applyReaderStyle"
+            @change="onStyleChange"
           />
         </div>
 
@@ -109,7 +141,7 @@
           <el-radio-group
             v-model="readerStyle.theme"
             class="w-full"
-            @change="applyReaderStyle"
+            @change="onStyleChange"
           >
             <el-radio-button value="light">白天</el-radio-button>
             <el-radio-button value="sepia">护眼</el-radio-button>
@@ -124,7 +156,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, reactive, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import ePub from "epubjs";
 import { ElMessage } from "element-plus";
@@ -149,15 +181,43 @@ interface ReaderStyle {
   lineHeight: number;
   margin: number;
   theme: ReaderTheme;
+  fontFamily: string;
+  bold: boolean;
 }
 
 const STYLE_STORAGE_KEY = "book-reader-style";
+
+const FONT_OPTIONS = [
+  { label: "跟随书籍", value: "" },
+  {
+    label: "黑体",
+    value: '"Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif',
+  },
+  {
+    label: "宋体",
+    value: 'SimSun, "Songti SC", "Noto Serif SC", serif',
+  },
+  {
+    label: "楷体",
+    value: 'KaiTi, "Kaiti SC", "STKaiti", serif',
+  },
+  {
+    label: "仿宋",
+    value: 'FangSong, "STFangsong", serif',
+  },
+  {
+    label: "系统无衬线",
+    value: 'system-ui, -apple-system, "Segoe UI", sans-serif',
+  },
+];
 
 const DEFAULT_STYLE: ReaderStyle = {
   fontSize: 100,
   lineHeight: 1.6,
   margin: 6,
   theme: "light",
+  fontFamily: "",
+  bold: false,
 };
 
 const THEME_STYLES: Record<ReaderTheme, { color: string; background: string }> =
@@ -169,6 +229,7 @@ const THEME_STYLES: Record<ReaderTheme, { color: string; background: string }> =
 
 const route = useRoute();
 const viewerRef = ref<HTMLElement | null>(null);
+const viewerShellRef = ref<HTMLElement | null>(null);
 const loading = ref(true);
 const errorMsg = ref("");
 const bookInfo = ref<CREATE_BOOK_RES | null>(null);
@@ -179,12 +240,21 @@ const tocList = ref<TocNode[]>([]);
 const tocTreeProps = { children: "children", label: "label" };
 const readerStyle = reactive<ReaderStyle>(loadReaderStyle());
 
+const viewerShellStyle = computed(() => {
+  const m = Math.max(0, Number(readerStyle.margin) || 0);
+  return {
+    paddingLeft: `${m}%`,
+    paddingRight: `${m}%`,
+  };
+});
+
 let epubBook: any = null;
 let rendition: any = null;
 let saveTimer: ReturnType<typeof setTimeout> | null = null;
 let latestCfi = "";
 let locationsReady = false;
-let wheelLock = false;
+let pageTurnLock = false;
+let lastKeyTimeStamp = 0;
 const contentCleanups: Array<() => void> = [];
 
 function loadReaderStyle(): ReaderStyle {
@@ -192,6 +262,8 @@ function loadReaderStyle(): ReaderStyle {
     const raw = localStorage.getItem(STYLE_STORAGE_KEY);
     if (!raw) return { ...DEFAULT_STYLE };
     const parsed = JSON.parse(raw);
+    const fontFamily = String(parsed.fontFamily ?? DEFAULT_STYLE.fontFamily);
+    const allowedFonts = FONT_OPTIONS.map(item => item.value);
     return {
       fontSize: Number(parsed.fontSize) || DEFAULT_STYLE.fontSize,
       lineHeight: Number(parsed.lineHeight) || DEFAULT_STYLE.lineHeight,
@@ -199,6 +271,10 @@ function loadReaderStyle(): ReaderStyle {
       theme: (["light", "sepia", "dark"].includes(parsed.theme)
         ? parsed.theme
         : DEFAULT_STYLE.theme) as ReaderTheme,
+      fontFamily: allowedFonts.includes(fontFamily)
+        ? fontFamily
+        : DEFAULT_STYLE.fontFamily,
+      bold: Boolean(parsed.bold),
     };
   } catch {
     return { ...DEFAULT_STYLE };
@@ -209,29 +285,80 @@ function saveReaderStyle() {
   localStorage.setItem(STYLE_STORAGE_KEY, JSON.stringify({ ...readerStyle }));
 }
 
-function applyReaderStyle() {
-  if (!rendition?.themes) return;
-  const theme = THEME_STYLES[readerStyle.theme] || THEME_STYLES.light;
-  const margin = `${readerStyle.margin}%`;
+function getViewerSize() {
+  const el = viewerRef.value;
+  if (!el) return { width: 800, height: 600 };
+  const width = Math.max(Math.floor(el.clientWidth), 100);
+  const height = Math.max(Math.floor(el.clientHeight), 100);
+  return { width, height };
+}
 
-  rendition.themes.fontSize(`${readerStyle.fontSize}%`);
-  rendition.themes.override("line-height", String(readerStyle.lineHeight));
-  rendition.themes.override("color", theme.color);
-  rendition.themes.override("background", theme.background);
-  rendition.themes.override("padding-left", margin);
-  rendition.themes.override("padding-right", margin);
-
-  // 同步外层阅读区背景，避免 iframe 边缘露白/露黑
-  if (viewerRef.value) {
-    viewerRef.value.style.background = theme.background;
+function safeCurrentCfi() {
+  try {
+    return rendition?.currentLocation?.()?.start?.cfi || latestCfi || "";
+  } catch {
+    return latestCfi || "";
   }
+}
 
-  saveReaderStyle();
+function applyReaderStyle(options?: { realign?: boolean }) {
+  if (!rendition?.themes) return;
+  try {
+    const theme = THEME_STYLES[readerStyle.theme] || THEME_STYLES.light;
+    const cfi = safeCurrentCfi();
+
+    // 不要改 body 的左右 padding：会破坏多栏宽度，导致某些页一次跳两页
+    rendition.themes.fontSize(`${readerStyle.fontSize}%`);
+    if (readerStyle.fontFamily) {
+      rendition.themes.font(readerStyle.fontFamily);
+    } else {
+      // 空值会 removeProperty，恢复书籍默认字体
+      rendition.themes.override("font-family", "");
+    }
+    // 仅在开启加粗时覆盖；关闭时移除，避免把标题等原有加粗冲掉
+    rendition.themes.override(
+      "font-weight",
+      readerStyle.bold ? "700" : "",
+      true
+    );
+    rendition.themes.override("line-height", String(readerStyle.lineHeight));
+    rendition.themes.override("color", theme.color);
+    rendition.themes.override("background", theme.background);
+    rendition.themes.override("padding-left", "0");
+    rendition.themes.override("padding-right", "0");
+    rendition.themes.override("margin", "0");
+
+    if (viewerRef.value) {
+      viewerRef.value.style.background = theme.background;
+    }
+
+    // 强制按当前可视区域重算分栏，并回到当前 CFI，避免页面对不齐
+    if (options?.realign !== false) {
+      const { width, height } = getViewerSize();
+      try {
+        rendition.resize(width, height);
+      } catch (error) {
+        console.warn("rendition.resize failed", error);
+      }
+      if (cfi) {
+        rendition.display(cfi).catch(() => undefined);
+      }
+    }
+
+    saveReaderStyle();
+  } catch (error) {
+    // 样式失败不应阻断阅读
+    console.warn("applyReaderStyle failed", error);
+  }
+}
+
+function onStyleChange() {
+  applyReaderStyle({ realign: true });
 }
 
 function resetReaderStyle() {
   Object.assign(readerStyle, DEFAULT_STYLE);
-  applyReaderStyle();
+  onStyleChange();
 }
 
 function resolveEpubUrl(url: string) {
@@ -295,26 +422,46 @@ function scheduleSaveProgress(cfi: string, percentage: number) {
   }, 800);
 }
 
+async function turnPage(direction: "prev" | "next") {
+  if (loading.value || pageTurnLock || !rendition) return;
+  pageTurnLock = true;
+  try {
+    if (direction === "next") await rendition.next();
+    else await rendition.prev();
+  } catch (error) {
+    console.warn("翻页失败", error);
+  } finally {
+    window.setTimeout(() => {
+      pageTurnLock = false;
+    }, 320);
+  }
+}
+
 function goPrev() {
-  if (loading.value) return;
-  rendition?.prev();
+  turnPage("prev");
 }
 
 function goNext() {
-  if (loading.value) return;
-  rendition?.next();
+  turnPage("next");
 }
 
 function onKeydown(e: KeyboardEvent) {
   if (tocVisible.value || styleVisible.value) return;
+  if (e.repeat) return;
+  // 同一按键事件若被 window / iframe 各收到一次，用 timeStamp 去重
+  if (e.timeStamp && e.timeStamp === lastKeyTimeStamp) return;
+  lastKeyTimeStamp = e.timeStamp || 0;
+
   const tag = (e.target as HTMLElement)?.tagName;
   if (tag === "INPUT" || tag === "TEXTAREA") return;
 
   if (e.key === "ArrowRight" || e.key === "PageDown") {
     e.preventDefault();
+    e.stopPropagation();
     goNext();
   } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
     e.preventDefault();
+    e.stopPropagation();
     goPrev();
   }
 }
@@ -322,13 +469,8 @@ function onKeydown(e: KeyboardEvent) {
 function onWheel(e: WheelEvent) {
   if (loading.value || tocVisible.value || styleVisible.value) return;
   if (Math.abs(e.deltaY) < 8) return;
-  if (wheelLock) return;
-  wheelLock = true;
   if (e.deltaY > 0) goNext();
   else goPrev();
-  window.setTimeout(() => {
-    wheelLock = false;
-  }, 280);
 }
 
 function bindContentsInput(contents: any) {
@@ -338,15 +480,19 @@ function bindContentsInput(contents: any) {
   const keyHandler = (e: KeyboardEvent) => onKeydown(e);
   const wheelHandler = (e: WheelEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     onWheel(e);
   };
 
-  doc.addEventListener("keydown", keyHandler);
-  doc.addEventListener("wheel", wheelHandler, { passive: false });
+  doc.addEventListener("keydown", keyHandler, true);
+  doc.addEventListener("wheel", wheelHandler, {
+    passive: false,
+    capture: true,
+  });
 
   contentCleanups.push(() => {
-    doc.removeEventListener("keydown", keyHandler);
-    doc.removeEventListener("wheel", wheelHandler);
+    doc.removeEventListener("keydown", keyHandler, true);
+    doc.removeEventListener("wheel", wheelHandler, true);
   });
 }
 
@@ -365,6 +511,11 @@ function onVisibilityChange() {
   if (document.visibilityState === "visible") {
     window.setTimeout(focusReader, 50);
   }
+}
+
+function onWindowResize() {
+  if (!rendition || loading.value) return;
+  applyReaderStyle({ realign: true });
 }
 
 async function initReader() {
@@ -396,10 +547,13 @@ async function initReader() {
       throw new Error(`EPUB 下载失败: ${fileRes.status}`);
     }
     const buffer = await fileRes.arrayBuffer();
+    const { width, height } = getViewerSize();
+
     epubBook = ePub(buffer);
     rendition = epubBook.renderTo(viewerRef.value, {
-      width: "100%",
-      height: "100%",
+      width,
+      height,
+      flow: "paginated",
       spread: "none",
       allowScriptedContent: true,
     });
@@ -408,20 +562,30 @@ async function initReader() {
 
     await epubBook.ready;
     await loadToc();
-    applyReaderStyle();
+    // 先套样式，再 display，避免 display 后再改 padding 把分页弄乱
+    applyReaderStyle({ realign: false });
 
     const savedCfi = res.data.readingProgress?.cfi;
     const savedPercentage = res.data.readingProgress?.percentage || 0;
     progressPercent.value = savedPercentage;
+    if (savedCfi) latestCfi = savedCfi;
 
-    if (savedCfi) {
-      await rendition.display(savedCfi);
-    } else {
+    // 进度 CFI 可能失效，失败时回退到开头，避免整页显示“加载失败”
+    try {
+      if (savedCfi) {
+        await rendition.display(savedCfi);
+      } else {
+        await rendition.display();
+      }
+    } catch (displayError) {
+      console.warn("display saved cfi failed, fallback to start", displayError);
       await rendition.display();
     }
-    // 章节渲染后再刷一次样式，确保生效
-    applyReaderStyle();
+
+    // display 后按最终尺寸再对齐一次（失败也不阻断）
+    applyReaderStyle({ realign: true });
     loading.value = false;
+    errorMsg.value = "";
     focusReader();
 
     rendition.on("relocated", (location: any) => {
@@ -457,15 +621,18 @@ async function initReader() {
 
 onMounted(() => {
   initReader();
+  // 仅作 iframe 失焦时的兜底；与 iframe 监听用 timeStamp 去重
   window.addEventListener("keydown", onKeydown, true);
   document.addEventListener("visibilitychange", onVisibilityChange);
   window.addEventListener("focus", focusReader);
+  window.addEventListener("resize", onWindowResize);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("keydown", onKeydown, true);
   document.removeEventListener("visibilitychange", onVisibilityChange);
   window.removeEventListener("focus", focusReader);
+  window.removeEventListener("resize", onWindowResize);
   contentCleanups.splice(0).forEach(fn => fn());
   if (saveTimer) clearTimeout(saveTimer);
   if (bookInfo.value?._id && latestCfi) {
