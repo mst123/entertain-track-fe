@@ -70,7 +70,7 @@
           <template #tip>
             <div class="el-upload__tip">
               支持 .epub，最大
-              50MB；上传后自动提取书名/简介/封面（已有内容不覆盖）
+              100MB；上传后自动提取书名/简介/封面（已有内容不覆盖）
             </div>
           </template>
         </el-upload>
