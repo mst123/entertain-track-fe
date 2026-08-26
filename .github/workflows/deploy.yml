@@ -33,6 +33,10 @@ jobs:
           context: .
           file: ${{ env.DOCKERFILE }}
           push: true
+          # ACR 个人版不支持 buildx 默认附带的 OCI attestation
+          provenance: false
+          sbom: false
+          platforms: linux/amd64
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
