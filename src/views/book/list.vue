@@ -27,11 +27,23 @@
             v-model="searchValue.status"
             placeholder="请选择"
             style="width: 240px"
+            clearable
           >
             <el-option label="想看" value="想看" />
             <el-option label="正在看" value="正在看" />
             <el-option label="看过" value="看过" />
             <el-option label="无" value="无" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否可阅读">
+          <el-select
+            v-model="searchValue.readable"
+            placeholder="请选择"
+            style="width: 160px"
+            clearable
+          >
+            <el-option label="可阅读" :value="true" />
+            <el-option label="不可阅读" :value="false" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -138,6 +150,7 @@ const searchValue: GET_BOOK_LIST_QUERY = reactive({
   categories: [],
   name: "",
   status: null,
+  readable: null,
 });
 
 // 获取所有的书籍标签

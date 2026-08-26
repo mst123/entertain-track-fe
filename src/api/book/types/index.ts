@@ -28,6 +28,8 @@ export interface GET_BOOK_LIST_QUERY {
   status?: "想看" | "正在看" | "看过" | "无";
   name?: string;
   categories?: String[];
+  /** 是否可阅读（有 epubUrl） */
+  readable?: boolean | null;
 }
 
 export interface GET_BOOK_LIST_RES extends Book {
